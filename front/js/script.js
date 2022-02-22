@@ -14,6 +14,7 @@ function displayItems(sofas) {
         console.log(sofas[i]);
     }
     const section = document.getElementById('items')
+    section.innerHTML = section
     console.log(section)
 }
 
