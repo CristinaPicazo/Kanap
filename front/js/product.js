@@ -18,6 +18,8 @@ const price = document.getElementById('price');
 const description = document.getElementById('description');
 const colors = document.getElementById('colors');
 var option = document.createElement("option");
+const cart = document.getElementById('addToCart');
+
 
 function displayItem(sofas) {
     for (let i = 0; i < sofas.length; i++) {
@@ -28,40 +30,18 @@ function displayItem(sofas) {
             price.innerHTML = `${sofa.price}`;
             description.innerHTML = `${sofa.description}`;
             for (let i = 0; i < sofa.colors.length; i++) {
-                option.text = sofa.colors[i];
-                console.log(option.text)
-                console.log(sofa.colors.length)
-                //console.log(sofa.colors[i])
-                colors.innerHTML += `<option value="${add(option, i)}">${colors.add(option, i)}</option>`;
+                console.log(sofa.colors.length)//there are 3 but shows just 1
+                option.text += sofa.colors[i];
             }
+            colors.innerHTML = `<option value="${colors.add(option, i)}">${colors.add(option, i)}</option>`;
+            console.log(option.text)//shows just 1
 
 
 
 
-            console.log(sofa[i].name);
         }
 
     }
-
-
-
 }
-console.log(window.location);
-title.innerHTML = '<h2>colors</h2>';
-console.log(itemImg)
-
-/*
-function displayItem(sofa) {
-    for (let i = 0; i <= sofa.length; i++) {
-        if (sofa[i]._id === id) {
-            itemImg.innerHTML = `
-                    <img src="../images/${sofa[i].imageUrl}" alt="Photographie d'un canapé">
-                    `;
-
-        }
-    }
-}
-*/
 
 
-console.log(id)
