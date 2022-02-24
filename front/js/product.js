@@ -18,30 +18,56 @@ const price = document.getElementById('price');
 const description = document.getElementById('description');
 const colors = document.getElementById('colors');
 var option = document.createElement("option");
-const cart = document.getElementById('addToCart');
 
 
 function displayItem(sofas) {
     for (let i = 0; i < sofas.length; i++) {
         if (sofas[i]._id === id) {
             const sofa = sofas[i];
-            itemImg.innerHTML = `<img src=${sofa.imageUrl} alt=${sofa.altTxt}>`;
+            itemImg[0].innerHTML = `<img src=${sofa.imageUrl} alt=${sofa.altTxt}>`;
             title.innerHTML = `${sofa.name}`;
             price.innerHTML = `${sofa.price}`;
             description.innerHTML = `${sofa.description}`;
+            let colorsArray = [];
+            console.log(sofa.colors[i])
             for (let i = 0; i < sofa.colors.length; i++) {
-                console.log(sofa.colors.length)//there are 3 but shows just 1
-                option.text += sofa.colors[i];
+                //console.log(sofa.colors.length)//there are 3 but shows just 1
+                //colorsArray = sofa.colors[i].push;
+                //console.log(colorsArray)//there are 3 but shows just 1
+                //option.text += sofa.colors[i];
+
+                //option.text = sofa.colors[i].name;
+                //option.value = sofa.colors[i].name;
+                //dropdown.add(option);
+                colorsArray[i] = sofa.colors[i].push;
+                console.log(colorsArray[i]);
             }
-            colors.innerHTML = `<option value="${colors.add(option, i)}">${colors.add(option, i)}</option>`;
-            console.log(option.text)//shows just 1
+            colors.innerHTML = `<option value="${add.option(colorsArray)}">${add.option(colorsArray)}</option>`;
 
-
-
-
+            //console.log(option.text)//shows just 1
+            /*
+                        if (localStorage) {
+                            localStorage.setItem(title.innerHTML)
+                            console.log("You have chosen " + localStorage.getItem(title.innerHTML))
+                        }
+            
+                        document.getElementById('addToCart').addEventListener('click', () => {
+                            alert(title.innerHTML);
+                        })*/
         }
 
     }
 }
+/*
 
+fetch('url', {
+method: 'POST',
+headers: {
+    'Content-type': 'application/json'
+},
+body: JSON.stringify({
 
+})
+})
+
+*/
