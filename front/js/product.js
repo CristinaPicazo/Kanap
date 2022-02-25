@@ -17,6 +17,7 @@ const title = document.getElementById('title');
 const price = document.getElementById('price');
 const description = document.getElementById('description');
 const colors = document.getElementById('colors');
+const quantity = document.getElementById('quantity')
 var option = document.createElement("option");
 
 
@@ -28,46 +29,79 @@ function displayItem(sofas) {
             title.innerHTML = `${sofa.name}`;
             price.innerHTML = `${sofa.price}`;
             description.innerHTML = `${sofa.description}`;
-            let colorsArray = [];
-            console.log(sofa.colors[i])
-            for (let i = 0; i < sofa.colors.length; i++) {
-                //console.log(sofa.colors.length)//there are 3 but shows just 1
-                //colorsArray = sofa.colors[i].push;
-                //console.log(colorsArray)//there are 3 but shows just 1
-                //option.text += sofa.colors[i];
-
-                //option.text = sofa.colors[i].name;
-                //option.value = sofa.colors[i].name;
-                //dropdown.add(option);
-                colorsArray[i] = sofa.colors[i].push;
-                console.log(colorsArray[i]);
-            }
-            colors.innerHTML = `<option value="${add.option(colorsArray)}">${add.option(colorsArray)}</option>`;
-
-            //console.log(option.text)//shows just 1
-            /*
-                        if (localStorage) {
-                            localStorage.setItem(title.innerHTML)
-                            console.log("You have chosen " + localStorage.getItem(title.innerHTML))
-                        }
+            //colors.innerHTML= `${sofa.colors.toString }`;
+            console.log(colors)
             
-                        document.getElementById('addToCart').addEventListener('click', () => {
-                            alert(title.innerHTML);
-                        })*/
+            
+            /*
+            sofa.colors.forEach(color =>
+                option.value = sofa.colors[i],
+                option.innerHTML += sofa.colors[i].toString,
+                
+                colors.innerHTML = `<option value="${appendChild(option)}">${appendChild(option)}</option>`
+                );
+                
+                */
+
+            
+            for (let n = 0; n < sofa.colors.length; n++) {
+                console.log(sofa.colors.length)//there are 3 but shows just 1
+                console.log(sofa.colors[0]);
+                console.log(sofa.colors[1]);
+                console.log(sofa.colors[2]);
+                console.log('con n: ' + sofa.colors[n]);
+                
+                
+                sofa.colors.options[sofa.colors.length] = new Option(sofa.colors[sofa.colors[n]],sofa.colors[n]);
+                colors.innerHTML = `<option value="${color}">${color}</option>`
+                   
+
+
+                   //console.log('muestra todos: ' + sofa.colors[i].innerHTML.toString);
+
+                   //option.text = sofa.colors[i].toString;
+                   //console.log(option.text);
+                }
+                
+               
+               //console.log(option.text)//shows just 1
+               /*
+               if (localStorage) {
+                   localStorage.setItem(title.innerHTML)
+                   console.log("You have chosen " + localStorage.getItem(title.innerHTML))
+                }
+                
+                document.getElementById('addToCart').addEventListener('click', () => {
+                    alert(title.innerHTML);
+                })*/
+            }
+
+
+            console.log("quantity of the product " + quantity);
+            document.getElementById('addToCart').addEventListener('click', () => {
+                //product, quantity and color
+                let cartArray = [id, quantity];
+                console.log("id: " + id + "quantity of the product " + quantity.value);
+                localStorage.setItem(id, quantity);
+                
+                
+                //window.location.href = "./index.html";
+            })
+            
+            
         }
-
     }
-}
-/*
-
-fetch('url', {
-method: 'POST',
-headers: {
-    'Content-type': 'application/json'
-},
-body: JSON.stringify({
-
-})
-})
-
-*/
+    /*
+    
+    fetch('url', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            
+        })
+    })
+    
+    */
+   
