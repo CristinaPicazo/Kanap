@@ -14,7 +14,6 @@ function displayItems(sofas) {
 
     for (let i = 0; i < sofas.length; i++) {
         const sofa = sofas[i];
-        console.log(sofa.imageUrl)
         section.innerHTML += `
         <a href="./product.html?id=${sofa._id}">
         <article>

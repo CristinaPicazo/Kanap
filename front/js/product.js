@@ -19,6 +19,7 @@ const description = document.getElementById('description');
 const colors = document.getElementById('colors');
 const quantity = document.getElementById('quantity')
 var option = document.createElement("option");
+let cartItems = [];
 
 
 function displayItem(sofas) {
@@ -29,10 +30,10 @@ function displayItem(sofas) {
             title.innerHTML = `${sofa.name}`;
             price.innerHTML = `${sofa.price}`;
             description.innerHTML = `${sofa.description}`;
-            //colors.innerHTML= `${sofa.colors.toString }`;
+            colors.innerHTML = `${sofa.colors.toString}`;
             console.log(colors)
-            
-            
+
+
             /*
             sofa.colors.forEach(color =>
                 option.value = sofa.colors[i],
@@ -43,65 +44,59 @@ function displayItem(sofas) {
                 
                 */
 
-            
+            let sofasArray = []
+
             for (let n = 0; n < sofa.colors.length; n++) {
                 console.log(sofa.colors.length)//there are 3 but shows just 1
                 console.log(sofa.colors[0]);
                 console.log(sofa.colors[1]);
-                console.log(sofa.colors[2]);
+                //console.log(sofa.colors[2]);
                 console.log('con n: ' + sofa.colors[n]);
-                
-                
-                sofa.colors.options[sofa.colors.length] = new Option(sofa.colors[sofa.colors[n]],sofa.colors[n]);
-                colors.innerHTML = `<option value="${color}">${color}</option>`
-                   
+                console.log('con n 1: ' + sofa.colors[1]);
+
+                sofasArray.push(sofa.colors[n]);
+
+                //sofa.colors.options[sofa.colors.length] = new Option(sofa.colors[sofa.colors[n]], sofa.colors[n]);
 
 
-                   //console.log('muestra todos: ' + sofa.colors[i].innerHTML.toString);
+                //console.log('muestra todos: ' + sofa.colors[i].innerHTML.toString);
 
-                   //option.text = sofa.colors[i].toString;
-                   //console.log(option.text);
-                }
-                
-               
-               //console.log(option.text)//shows just 1
-               /*
-               if (localStorage) {
-                   localStorage.setItem(title.innerHTML)
-                   console.log("You have chosen " + localStorage.getItem(title.innerHTML))
-                }
-                
-                document.getElementById('addToCart').addEventListener('click', () => {
-                    alert(title.innerHTML);
-                })*/
+                //option.text = sofa.colors[i].toString;
+                //console.log(option.text);
             }
+            colors.innerHTML = `<option value="${add.sofasArray[i]}">${add.sofasArray[i]}</option>`
 
 
-            console.log("quantity of the product " + quantity);
-            document.getElementById('addToCart').addEventListener('click', () => {
-                //product, quantity and color
-                let cartArray = [id, quantity];
-                console.log("id: " + id + "quantity of the product " + quantity.value);
-                localStorage.setItem(id, quantity);
-                
-                
-                //window.location.href = "./index.html";
-            })
-            
-            
+
+            //console.log(option.text)//shows just 1
+            /*
+            if (localStorage) {
+                localStorage.setItem(title.innerHTML)
+                console.log("You have chosen " + localStorage.getItem(title.innerHTML))
+             }
+             
+             document.getElementById('addToCart').addEventListener('click', () => {
+                 alert(title.innerHTML);
+             })*/
         }
+
+
     }
     /*
-    
-    fetch('url', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            
-        })
-    })
-    
+        var a = [];
+        a.push(JSON.parse(localStorage.getItem('session')));
+        localStorage.setItem('session', JSON.stringify(a));
     */
-   
+    document.getElementById('addToCart').addEventListener('click', () => {
+        //product, quantity and color  
+        cartItems.push(id, quantity.value);
+        //localStorage.setItem('id', JSON.stringify(cartItems));
+
+        cartItems.push(JSON.parse(localStorage.getItem('id')));
+        localStorage.setItem('id', JSON.stringify(cartItems));
+        //let item = localStorage.getItem('id');
+        //let items = JSON.parse(localStorage, getItem('id'));
+        console.log('item: ' + localStorage.getItem('id'));
+        //console.log('items: ' + items);
+    })
+}
