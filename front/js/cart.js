@@ -12,17 +12,16 @@ fetch(url)
 
 cartItem = [];
 cartItem.push(JSON.parse(localStorage.getItem('id')));
-//cartItems.push(localStorage.getItem('id'));
 console.log('item: ' + localStorage.getItem('id'));
 console.log('cartItems: ' + cartItem);
-
+//let person = { id: id, lastName: quantity.value, colors: colors.value };
 
 const cartItems = document.getElementById('cart__items');
 
 function displayItem(sofas) {
     for (let i = 0; i < sofas.length; i++) {
         if (sofas[i]._id === cartItem[0][0]) {
-            const sofa = sofas[i];
+            const sofa = sofas[n];
             cartItems.innerHTML += `
             <article class="cart__item" data-id="${sofa._id}$" data-color="{product - color}$">
                             <div class="cart__item__img">

@@ -16,9 +16,9 @@ const itemImg = document.getElementsByClassName('item__img');
 const title = document.getElementById('title');
 const price = document.getElementById('price');
 const description = document.getElementById('description');
-const colors = document.getElementById('colors');
 const quantity = document.getElementById('quantity')
-var option = document.createElement("option");
+const colors = document.getElementById('colors');
+//var option = document.createElement("option");
 let cartItems = [];
 
 
@@ -30,73 +30,22 @@ function displayItem(sofas) {
             title.innerHTML = `${sofa.name}`;
             price.innerHTML = `${sofa.price}`;
             description.innerHTML = `${sofa.description}`;
-            colors.innerHTML = `${sofa.colors.toString}`;
-            console.log(colors)
-
-
-            /*
-            sofa.colors.forEach(color =>
-                option.value = sofa.colors[i],
-                option.innerHTML += sofa.colors[i].toString,
-                
-                colors.innerHTML = `<option value="${appendChild(option)}">${appendChild(option)}</option>`
-                );
-                
-                */
-
-            let sofasArray = []
 
             for (let n = 0; n < sofa.colors.length; n++) {
-                console.log(sofa.colors.length)//there are 3 but shows just 1
-                console.log(sofa.colors[0]);
-                console.log(sofa.colors[1]);
-                //console.log(sofa.colors[2]);
-                console.log('con n: ' + sofa.colors[n]);
-                console.log('con n 1: ' + sofa.colors[1]);
-
-                sofasArray.push(sofa.colors[n]);
-
-                //sofa.colors.options[sofa.colors.length] = new Option(sofa.colors[sofa.colors[n]], sofa.colors[n]);
-
-
-                //console.log('muestra todos: ' + sofa.colors[i].innerHTML.toString);
-
-                //option.text = sofa.colors[i].toString;
-                //console.log(option.text);
+                var option = document.createElement("option");
+                option.value = sofa.colors[n];
+                option.text = sofa.colors[n];
+                colors.add(option);
             }
-            colors.innerHTML = `<option value="${add.sofasArray[i]}">${add.sofasArray[i]}</option>`
-
-
-
-            //console.log(option.text)//shows just 1
-            /*
-            if (localStorage) {
-                localStorage.setItem(title.innerHTML)
-                console.log("You have chosen " + localStorage.getItem(title.innerHTML))
-             }
-             
-             document.getElementById('addToCart').addEventListener('click', () => {
-                 alert(title.innerHTML);
-             })*/
         }
 
 
     }
-    /*
-        var a = [];
-        a.push(JSON.parse(localStorage.getItem('session')));
-        localStorage.setItem('session', JSON.stringify(a));
-    */
+
     document.getElementById('addToCart').addEventListener('click', () => {
         //product, quantity and color  
-        cartItems.push(id, quantity.value);
-        //localStorage.setItem('id', JSON.stringify(cartItems));
-
+        cartItems.push(id, quantity.value, colors.value);
         cartItems.push(JSON.parse(localStorage.getItem('id')));
         localStorage.setItem('id', JSON.stringify(cartItems));
-        //let item = localStorage.getItem('id');
-        //let items = JSON.parse(localStorage, getItem('id'));
-        console.log('item: ' + localStorage.getItem('id'));
-        //console.log('items: ' + items);
     })
 }
