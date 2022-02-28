@@ -16,9 +16,8 @@ const itemImg = document.getElementsByClassName('item__img');
 const title = document.getElementById('title');
 const price = document.getElementById('price');
 const description = document.getElementById('description');
-const quantity = document.getElementById('quantity')
-const colors = document.getElementById('colors');
-//var option = document.createElement("option");
+let quantity = document.getElementById('quantity')
+let colors = document.getElementById('colors');
 let cartItems = [];
 
 
@@ -43,9 +42,13 @@ function displayItem(sofas) {
     }
 
     document.getElementById('addToCart').addEventListener('click', () => {
-        //product, quantity and color  
-        cartItems.push(id, quantity.value, colors.value);
-        cartItems.push(JSON.parse(localStorage.getItem('id')));
-        localStorage.setItem('id', JSON.stringify(cartItems));
+        if (quantity.value > 0 && colors.value != "") {
+            //product, quantity and color
+            cartItems.push(id, quantity.value, colors.value);
+            localStorage.setItem('id', JSON.stringify(cartItems));
+            console.log("id: " + id + " quantity.value " + quantity.value + " colors.value " + colors.value);
+        } else {
+            alert("Please select a minimum quantity and color");
+        }
     })
 }
