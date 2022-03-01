@@ -1,25 +1,16 @@
-const url = 'http://127.0.0.1:3000/api/products';
-fetch(url)
-    .then(response => {
-        const json = response.json()
-        return json;
-    })
-    .then(data => {
-        displayItem(data)
-    })
-    .catch(err => console.log(err))
-
-
-cartItem = [];
-cartItem.push(JSON.parse(localStorage.getItem('id')));
-console.log('item: ' + localStorage.getItem('id'));
-console.log('cartItems: ' + cartItem);
+const cartItems = [];
+for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const sofa = localStorage.getItem(key);
+    cartItems.push(JSON.parse(sofa));
+}
+console.log(cartItems);
 //let person = { id: id, lastName: quantity.value, colors: colors.value };
 
 
 //Separate sofas
 //color = cartItem[0][i].search("Blue" || "White" || "Black" || "Yellow" || "Red" || "Green" || "Orange" || "Pink" || "Grey" || "Purple" || "Navi" || "Silver" || "Brown")
-const numberPattern = /[0-9]/;
+/*const numberPattern = /[0-9]/;
 const lettersPattern = /\w/g;
 const sofaChosen = {
     idSofa: "",
@@ -91,3 +82,4 @@ function displayItem(sofas) {
         }
     }
 }
+*/
