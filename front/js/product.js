@@ -34,16 +34,16 @@ function displayItem(sofa) {
         option.value = sofa.colors[n];
         option.text = sofa.colors[n];
         colors.add(option);
+
     }
 }
-
 
 
 document.getElementById('addToCart').addEventListener('click', () => {
     if (quantity.value > 0 && colors.value != "") {
         //product, quantity and color
         sofaChosen.selectedColor = colors.value;
-        sofaChosen.selectedQuantity = quantity.value;
+        sofaChosen.selectedQuantity = parseInt(quantity.value);
 
         localStorage.setItem(sofaChosen._id + ":" + colors.value, JSON.stringify(sofaChosen));
     } else {
