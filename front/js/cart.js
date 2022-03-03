@@ -11,12 +11,6 @@ console.log(cartItemsArray);
 
 for (let i = 0; i < cartItemsArray.length; i++) {
     let cartItems = document.getElementById('cart__items');
-    let totalQuantity = document.getElementById('totalQuantity');
-    let totalPrice = document.getElementById('totalPrice');
-
-    totalQuantity.innerHTML += parseInt(cartItemsArray[i].selectedQuantity);
-    totalPrice.innerHTML += parseInt(cartItemsArray[i].selectedQuantity * cartItemsArray[i].price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");;
-
     cartItems.innerHTML += `
                         <article class="cart__item" data-id="${cartItemsArray[i]._id}" data-color="${cartItemsArray[i].selectedColor}">
                                         <div class="cart__item__img">
@@ -40,19 +34,50 @@ for (let i = 0; i < cartItemsArray.length; i++) {
                                         </div>
                                     </article>
                         `;
-    //Delete Sofa
-    /*
-    const deleteItem;
-    const deleteItem = document.getElementsByClassName('deleteItem').addEventListener('click', () => {
+
+
+    //Delete Sofa    
+    let deleteItems = document.getElementsByClassName('deleteItem');
+    deleteItems[i].addEventListener('click', () => {
+        alert('hola')
         delete cartItemsArray[i];
+        if (cartItemsArray[i + 1] != undefined) {
+            cartItemsArray[i] = cartItemsArray[i - 1]
+        }
     });
+
+
+    //Totals
+    let totalQuantity = document.getElementById('totalQuantity');
+    let totalPrice = document.getElementById('totalPrice');
+    totalQuantity += cartItemsArray[i].selectedQuantity;
+
+    //cartItemsArray[i].selectedQuantity = parseInt(cartItemsArray[i].selectedQuantity);
+    //totalQuantity.innerHTML += cartItemsArray[i].selectedQuantity;
+    //let totalQuantityProducts;
+    //totalQuantity.innerHTML = totalQuantityProducts;
+    //Number(totalQuantityProducts) = cartItemsArray[i].selectedQuantity
+
+
+    /*
+    cartItemsArray[i].selectedQuantity.addEventListener('change', () => {
+        totalQuantity.innerHTML = parseInt(cartItemsArray[i].selectedQuantity);
+    })
     */
+    totalPrice.innerHTML += parseFloat(cartItemsArray[i].selectedQuantity * cartItemsArray[i].price);
+    //.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+
 }
 
-
 //Order Sofa
-/*
-document.getElementById('order').addEventListener('click', () => {
+const contact = {
+    firstName: document.getElementById('firstName'),
+    lastName: document.getElementById('lastName'),
+    address: document.getElementById('address'),
+    city: document.getElementById('city'),
+    email: document.getElementById('email')
+};
 
+document.getElementById('order').addEventListener('click', () => {
+    console.log(contact);
 });
-*/
