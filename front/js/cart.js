@@ -79,5 +79,5 @@ const contact = {
 };
 
 document.getElementById('order').addEventListener('click', () => {
-    console.log(contact);
+    alert(contact);
 });

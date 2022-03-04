@@ -1,4 +1,14 @@
-//Take data from back
+/**
+ * Project 5
+ * @author Cristina Picazo Merlos
+ * @param {string} title - Project 5
+ * @param {string} author - Cristina Picazo Merlos
+ * @see https://cristinapicazo.github.io/Kanap/front/html/index.html
+ * @returns {Object} 
+ */
+function Project5(title, author) { }
+
+//Taken data from back
 const url = 'http://127.0.0.1:3000/api/products';
 fetch(url)
     .then(response => {
