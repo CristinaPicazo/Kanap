@@ -1,14 +1,29 @@
+/**
+ * Project 5
+ * @author Cristina Picazo Merlos
+ * @param {string} title - Project 5
+ * @param {string} author - Cristina Picazo Merlos
+ * @see https://cristinapicazo.github.io/Kanap/front/html/index.html
+ * @returns {Object} 
+ */
+function Project5(title, author) { }
+
+//Get itmems from local storeage
 const cartItemsArray = [];
 for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     const sofa = localStorage.getItem(key);
     cartItemsArray.push(JSON.parse(sofa));
 }
-console.log(cartItemsArray);
 
-//const numberPattern = /[0-9]/;
-//const lettersPattern = /\w/g;
+let totalQuantity = document.getElementById('totalQuantity');
+let sumTotalQuantity = "";
+let totalPrice = document.getElementById('totalPrice');
+let deleteItems = document.getElementsByClassName('deleteItem');
 
+
+
+//Show items in cart
 for (let i = 0; i < cartItemsArray.length; i++) {
     let cartItems = document.getElementById('cart__items');
     cartItems.innerHTML += `
@@ -36,37 +51,27 @@ for (let i = 0; i < cartItemsArray.length; i++) {
                         `;
 
 
+    //TO DO
     //Delete Sofa    
-    let deleteItems = document.getElementsByClassName('deleteItem');
-    deleteItems[i].addEventListener('click', () => {
-        alert('hola')
-        delete cartItemsArray[i];
-        if (cartItemsArray[i + 1] != undefined) {
-            cartItemsArray[i] = cartItemsArray[i - 1]
-        }
+    cartItemsArray.forEach(element => {
+        delete cartItemsArray[element];
     });
-
-
-    //Totals
-    let totalQuantity = document.getElementById('totalQuantity');
-    let totalPrice = document.getElementById('totalPrice');
-    totalQuantity += cartItemsArray[i].selectedQuantity;
-
-    //cartItemsArray[i].selectedQuantity = parseInt(cartItemsArray[i].selectedQuantity);
-    //totalQuantity.innerHTML += cartItemsArray[i].selectedQuantity;
-    //let totalQuantityProducts;
-    //totalQuantity.innerHTML = totalQuantityProducts;
-    //Number(totalQuantityProducts) = cartItemsArray[i].selectedQuantity
-
-
     /*
-    cartItemsArray[i].selectedQuantity.addEventListener('change', () => {
-        totalQuantity.innerHTML = parseInt(cartItemsArray[i].selectedQuantity);
-    })
+        deleteItems[i].addEventListener('click', () => {
+            delete cartItemsArray[i];
+            if (cartItemsArray[i + 1] != undefined) {
+                cartItemsArray[i] = cartItemsArray[i - 1]
+            }
+        });
     */
+
+    //TO DO
+    //Totals
+    //let sumTotalQuantity = parseInt(cartItemsArray[i].selectedQuantity);
+    sumTotalQuantity += cartItemsArray[i].selectedQuantity;
+    totalQuantity.innerHTML = sumTotalQuantity;
     totalPrice.innerHTML += parseFloat(cartItemsArray[i].selectedQuantity * cartItemsArray[i].price);
     //.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-
 }
 
 //Order Sofa

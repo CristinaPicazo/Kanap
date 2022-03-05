@@ -1,3 +1,12 @@
+/**
+ * Project 5
+ * @author Cristina Picazo Merlos
+ * @param {string} title - Project 5
+ * @param {string} author - Cristina Picazo Merlos
+ * @see https://cristinapicazo.github.io/Kanap/front/html/index.html
+ * @returns {Object} 
+ */
+function Project5(title, author) { }
 
 //Taken id from hombe page
 const id = window.location.search.split('=').at(-1);
@@ -63,7 +72,11 @@ document.getElementById('addToCart').addEventListener('click', () => {
             }
             */
             cartItemsArray.push(JSON.parse(sofa));
+            /*
+            JSON.parse('{"p": 5}', function (k, v) {
+                if(cartItemsArray[i]._id+":"+cartItemsArray[i].selectedColor === sofaChosen._id + ":" + colors.value)
             alert(cartItemsArray[i])
+            */
         }
 
 
