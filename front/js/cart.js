@@ -17,8 +17,9 @@ for (let i = 0; i < localStorage.length; i++) {
 }
 
 let totalQuantity = document.getElementById('totalQuantity');
-let sumTotalQuantity = "";
+let sumQuantity = 0;
 let totalPrice = document.getElementById('totalPrice');
+let sumPrice = 0;
 
 
 
@@ -82,16 +83,18 @@ for (let i = 0; i < cartItemsArray.length; i++) {
                 cartItemsArray[i] = cartItemsArray[i - 1]
             }
         });
-    
+    */
 
     //TO DO
     //Totals
-    //let sumTotalQuantity = parseInt(cartItemsArray[i].selectedQuantity);
-    const sumTotalQuantity += cartItemsArray[i].selectedQuantity;
-    totalQuantity.innerHTML = sumTotalQuantity;
-    totalPrice.innerHTML += parseFloat(cartItemsArray[i].selectedQuantity * cartItemsArray[i].price);
-    //.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-    */
+    sumQuantity += Number(cartItemsArray[i].selectedQuantity);
+    totalQuantity.innerHTML = sumQuantity;
+
+
+    sumPrice += Number(cartItemsArray[i].price);
+    totalPrice.innerHTML = sumPrice;
+
+
     let deleteItems = document.getElementsByClassName('deleteItem');
 
 
