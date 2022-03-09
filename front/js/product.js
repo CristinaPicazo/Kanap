@@ -41,57 +41,38 @@ function displayItem(sofa) {
     description.innerHTML = `${sofa.description}`;
 
     //Display colors in a dropdown
-    for (let n = 0; n < sofa.colors.length; n++) {
+    for (const color of sofa.colors) {
         const option = document.createElement("option");
-        option.value = sofa.colors[n];
-        option.text = sofa.colors[n];
+        option.value = color;
+        option.text = color;
         colors.add(option);
-
     }
 }
 
 //Button "add to cart"
 document.getElementById('addToCart').addEventListener('click', () => {
-    if (quantity.value > 0 && colors.value != "") {
-        //product, quantity and color
-        sofaChosen.selectedColor = colors.value;
-        sofaChosen.selectedQuantity = quantity.value;
+    const quantityNumber = Number(quantity.value);
+    if (quantityNumber == 0) return alert("Please select a minimum quantity");
+    if (colors.value == "") return alert("Please select the color");
 
-        const cartItemsArray = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const sofa = localStorage.getItem(key);
-            /*
-            //Sum duplicates
-            sofaChosen.key = key;
-            for (let i = 0; i < cartItemsArray.length; i++) {
-                if (cartItemsArray[i].key === key) {
-                    sofaChosen.selectedQuantity = cartItemsArray[i].selectedQuantity + quantity.value;
-                    alert('items added');
-                }
-            }
-            */
-            cartItemsArray.push(JSON.parse(sofa));
-            /*
-            JSON.parse('{"p": 5}', function (k, v) {
-                if(cartItemsArray[i]._id+":"+cartItemsArray[i].selectedColor === sofaChosen._id + ":" + colors.value)
-            alert(cartItemsArray[i])
-            */
-        }
+    //product, quantity and color
+    sofaChosen.selectedColor = colors.value;
+    sofaChosen.selectedQuantity = quantityNumber;
+    const key = sofaChosen._id + ":" + colors.value;
+    const sofa = JSON.parse(localStorage.getItem(key));
+    if (sofa == null) return addSofaToCart(key, sofaChosen);
+    updateSofaQuantity(quantityNumber, sofa, sofaChosen);
 
-
-        localStorage.setItem(sofaChosen._id + ":" + colors.value, JSON.stringify(sofaChosen));
-
-
-        //Avoid empty colors and quantity
-    } else {
-        if (quantity.value == 0 && colors.value != "") {
-            alert("Please select a minimum quantity");
-        } else if (quantity.value > 0 && colors.value == "") {
-            alert("Please select color");
-        } else {
-            alert("Please select a minimum quantity and color");
-        }
+    function addSofaToCart(key, sofaChosen) {
+        localStorage.setItem(key, JSON.stringify(sofaChosen));
     }
+
+    function updateSofaQuantity(quantityNumber, sofa, sofaChosen) {
+        const newQuantity = quantityNumber + sofa.selectedQuantity;
+        sofaChosen.selectedQuantity = newQuantity;
+        addSofaToCart(key, sofaChosen);
+    }
+
+
 })
 
