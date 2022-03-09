@@ -16,18 +16,23 @@ for (let i = 0; i < localStorage.length; i++) {
     cartItemsArray.push(JSON.parse(sofa));
 }
 
+let itemQuantity;
 let totalQuantity = document.getElementById('totalQuantity');
 let sumQuantity = 0;
 let totalPrice = document.getElementById('totalPrice');
 let sumPrice = 0;
-
+let deleteItems;
+let numToDelete;
+let itemQuantityValue;
+showItemsinPage();
 
 
 //Show items in cart
-for (let i = 0; i < cartItemsArray.length; i++) {
-    let cartItems = document.getElementById('cart__items');
-
-    cartItems.innerHTML += `
+function showItemsinPage() {
+    for (let i = 0; i < cartItemsArray.length; i++) {
+        let cartItems = document.getElementById('cart__items');
+        if (cartItemsArray[i] != undefined) {
+            cartItems.innerHTML += `
                                 <article class="cart__item" data-id="${cartItemsArray[i]._id}" data-color="${cartItemsArray[i].selectedColor}">
                                                 <div class="cart__item__img">
                                                 <img src=${cartItemsArray[i].imageUrl} alt=${cartItemsArray[i].altTxt}>
@@ -52,52 +57,53 @@ for (let i = 0; i < cartItemsArray.length; i++) {
                                 `;
 
 
-    //TO DO
-    //Delete Sofa 
+            //TO DO
+            //Delete Sofa 
+            deleteItems = document.querySelectorAll('.deleteItem');
+
+            for (const deleteItem of deleteItems) {
+                deleteItem.addEventListener('click', function (event) {
+                    alert(event.target);
+                    location.reload();
+                    //showItemsinPage();
+                });
+            };
 
 
-    /*
-    productRows.forEach(function(productRow){
-        var product = productRow.querySelector(".product");
-        var price = productRow.querySelector(".price");
-        var quantity = productRow.querySelector(".quantity");
-        var order = product[i].innerText +" | "+ price[i].innerText +" | "+ quantity[i].innerText;
-        console.log(order);
-    });
-    deleteItems[i].addEventListener('click', function () {
-        //deleteItems[i] = undefined,
-        alert('delete click')
-    }, { once: true });
-
-    cartItemsArray.forEach(element => {
-        delete cartItemsArray[element];
-    });
-
-    const filterSofas = cartItemsArray.filter(sofas => 
-        sofas != "");
 
 
-        deleteItems[i].addEventListener('click', () => {
-            delete cartItemsArray[i];
-            if (cartItemsArray[i + 1] != undefined) {
-                cartItemsArray[i] = cartItemsArray[i - 1]
+            //TO DO
+            //Totals
+            itemQuantityValue = document.querySelectorAll('input[name="itemQuantity"]');
+
+            //Total Price
+            //Show items from products added in cart
+            let total = Number(cartItemsArray[i].selectedQuantity) * Number(cartItemsArray[i].price);
+            sumPrice += total;
+            totalPrice.innerHTML = sumPrice;
+
+            //Total Items
+            //Show items from products added in cart
+            sumQuantity += Number(cartItemsArray[i].selectedQuantity);
+            totalQuantity.innerHTML = sumQuantity;
+
+            //Add items in the cart page
+            for (const itemQuantityValues of itemQuantityValue) {
+                itemQuantityValues.addEventListener('change', function (event) {
+                    sumQuantity += Number(event.target.value);
+                    totalQuantity.innerHTML = sumQuantity;
+
+                    //Price
+                    let total = Number(event.target.value) * Number(cartItemsArray[i].price);
+                    sumPrice += total;
+                    totalPrice.innerHTML = sumPrice;
+                })
             }
-        });
-    */
-
-    //TO DO
-    //Totals
-    sumQuantity += Number(cartItemsArray[i].selectedQuantity);
-    totalQuantity.innerHTML = sumQuantity;
 
 
-    sumPrice += Number(cartItemsArray[i].price);
-    totalPrice.innerHTML = sumPrice;
 
-
-    let deleteItems = document.getElementsByClassName('deleteItem');
-
-
+        }
+    }
 }
 
 function deleteSofa() {
