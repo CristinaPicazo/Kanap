@@ -63,67 +63,96 @@ function showItemsinPage() {
 
             for (const deleteItem of deleteItems) {
                 deleteItem.addEventListener('click', function (event) {
+                    this.style.backgroundColor = "red";
+                    console.log(event.target)
+                });
+            }
+            /*
+            for (let n = 0; n < deleteItems.length; n++) {
+                deleteItems[n].addEventListener('click', function (event) {
+                    //let deleteItemSelected = deleteItem[i];
+                    //const itemToDelete = cartItemsArray[deleteItemSelected];
+                    const sofa = JSON.parse(localStorage.getItem(cartItemsArray[deleteItems[n]]));
+                    console.log('cartItemsArray.length ' + cartItemsArray.length)
+                    console.log('deleteItems[n] ' + deleteItems[n])
+                    console.log('sofa ' + sofa)
                     alert(event.target);
                     location.reload();
                     //showItemsinPage();
                 });
             };
+            */
 
-
-
-
-            //TO DO
             //Totals
             itemQuantityValue = document.querySelectorAll('input[name="itemQuantity"]');
+            let selectedQuantityInProduct = Number(cartItemsArray[i].selectedQuantity);
+            let priceProduct = Number(cartItemsArray[i].price);
 
             //Total Price
             //Show items from products added in cart
-            let total = Number(cartItemsArray[i].selectedQuantity) * Number(cartItemsArray[i].price);
+            let total = selectedQuantityInProduct * priceProduct;
             sumPrice += total;
-            totalPrice.innerHTML = sumPrice;
 
             //Total Items
             //Show items from products added in cart
-            sumQuantity += Number(cartItemsArray[i].selectedQuantity);
+            sumQuantity += selectedQuantityInProduct;
             totalQuantity.innerHTML = sumQuantity;
+            totalPrice.innerHTML = sumPrice;
 
             //Add items in the cart page
+            //Go inside each input
             for (const itemQuantityValues of itemQuantityValue) {
+                let selectedQuantityInProduct = Number(itemQuantityValues.value);
+                //Adjust any change in the quantity
                 itemQuantityValues.addEventListener('change', function (event) {
-                    sumQuantity += Number(event.target.value);
-                    totalQuantity.innerHTML = sumQuantity;
-
-                    //Price
-                    let total = Number(event.target.value) * Number(cartItemsArray[i].price);
-                    sumPrice += total;
-                    totalPrice.innerHTML = sumPrice;
+                    if (selectedQuantityInProduct < Number(event.target.value)) {
+                        sumQuantity++;
+                        selectedQuantityInProduct++;
+                        sumPrice += priceProduct;
+                        totalPrice.innerHTML = sumPrice;
+                        totalQuantity.innerHTML = sumQuantity;
+                    }
+                    else {
+                        sumQuantity--;
+                        selectedQuantityInProduct--;
+                        sumPrice -= priceProduct;
+                        totalPrice.innerHTML = sumPrice;
+                        totalQuantity.innerHTML = sumQuantity;
+                    }
                 })
             }
-
-
-
         }
     }
 }
 
-function deleteSofa() {
-    deleteItems.addEventListener('click', function () {
-        //deleteItems[i] = undefined,
-        alert('delete click')
-    }, { once: true });
-}
-
-
 
 //Order Sofa
-const contact = {
-    firstName: document.getElementById('firstName'),
-    lastName: document.getElementById('lastName'),
-    address: document.getElementById('address'),
-    city: document.getElementById('city'),
-    email: document.getElementById('email')
-};
+const order = document.getElementById('order');
+//order.click(function(){
+//$.post( "https://github.com/CristinaPicazo/Kanap/blob/main/front/html/cart.html",{
+firstName = document.getElementById('firstName'),
+    lastName = document.getElementById('lastName'),
+    address = document.getElementById('address'),
+    city = document.getElementById('city'),
+    email = document.getElementById('email')
+//} );
+document.getElementById('order').addEventListener('click', () => {
+
+    contact.firstName = document.getElementById('firstName'),
+        contact.lastName = document.getElementById('lastName'),
+        contact.address = document.getElementById('address'),
+        contact.city = document.getElementById('city'),
+        contact.email = document.getElementById('email')
+});
 
 document.getElementById('order').addEventListener('click', () => {
     alert(contact);
 });
+/*
+$("input").keyup(function () {
+    var txt = $("input").val();
+    $.post("demo_ajax_gethint.asp", { suggest: txt }, function (result) {
+        $("span").html(result);
+    });
+});
+*/

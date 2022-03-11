@@ -63,10 +63,12 @@ document.getElementById('addToCart').addEventListener('click', () => {
     if (sofa == null) return addSofaToCart(key, sofaChosen);
     updateSofaQuantity(quantityNumber, sofa, sofaChosen);
 
+    //Send sofa to cart
     function addSofaToCart(key, sofaChosen) {
         localStorage.setItem(key, JSON.stringify(sofaChosen));
     }
 
+    //Update sofa quantity if it is already in the cart ++
     function updateSofaQuantity(quantityNumber, sofa, sofaChosen) {
         const newQuantity = quantityNumber + sofa.selectedQuantity;
         sofaChosen.selectedQuantity = newQuantity;
