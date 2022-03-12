@@ -9,11 +9,16 @@
 function Project5(title, author) { }
 
 //Get itmems from local storeage
-const cartItemsArray = [];
+let cartItemsArray = [];
+const numbersReg = new RegExp('[^0-9]');
 for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    const sofa = localStorage.getItem(key);
-    cartItemsArray.push(JSON.parse(sofa));
+    if (numbersReg.test(localStorage.key(i)) == true) {
+        const key = localStorage.key(i);
+        console.log(key)
+        console.log(numbersReg.test(key))
+        const sofa = localStorage.getItem(key);
+        cartItemsArray.push(JSON.parse(sofa));
+    }
 }
 
 let itemQuantity;
@@ -62,10 +67,15 @@ function showItemsinPage() {
             deleteItems = document.querySelectorAll('.deleteItem');
 
             for (const deleteItem of deleteItems) {
+                //cartItems[i].deleteItem = '';
+                //localStorage.removeItem('key');
                 deleteItem.addEventListener('click', function (event) {
+                    console.log('cartItemsArray[i]._id ' + cartItemsArray[i]._id);
+                    console.log('deleteItem[i] ' + deleteItem[i]);
+                    console.log(deleteItem);
                     this.style.backgroundColor = "red";
-                    console.log(event.target)
                 });
+
             }
             /*
             for (let n = 0; n < deleteItems.length; n++) {
@@ -127,32 +137,55 @@ function showItemsinPage() {
 
 
 //Order Sofa
-const order = document.getElementById('order');
-//order.click(function(){
-//$.post( "https://github.com/CristinaPicazo/Kanap/blob/main/front/html/cart.html",{
-firstName = document.getElementById('firstName'),
-    lastName = document.getElementById('lastName'),
-    address = document.getElementById('address'),
-    city = document.getElementById('city'),
-    email = document.getElementById('email')
-//} );
-document.getElementById('order').addEventListener('click', () => {
 
-    contact.firstName = document.getElementById('firstName'),
-        contact.lastName = document.getElementById('lastName'),
-        contact.address = document.getElementById('address'),
-        contact.city = document.getElementById('city'),
-        contact.email = document.getElementById('email')
-});
+const firstName = document.getElementById('firstName');
+const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+const noNumbers = new RegExp('^[a-z]*$');
+checkInput(firstName, noNumbers, firstNameErrorMsg);
 
-document.getElementById('order').addEventListener('click', () => {
-    alert(contact);
-});
-/*
-$("input").keyup(function () {
-    var txt = $("input").val();
-    $.post("demo_ajax_gethint.asp", { suggest: txt }, function (result) {
-        $("span").html(result);
+const lastName = document.getElementById('lastName');
+const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
+checkInput(lastName, noNumbers, lastNameErrorMsg);
+
+const address = document.getElementById('address');
+const addressErrorMsg = document.getElementById('addressErrorMsg');
+//checkInput(address, noNumbers, addressErrorMsg);
+
+const city = document.getElementById('city');
+const cityErrorMsg = document.getElementById('cityErrorMsg');
+checkInput(city, noNumbers, cityErrorMsg);
+
+const email = document.getElementById('email');
+const emailErrorMsg = document.getElementById('emailErrorMsg');
+const emailReg = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+//TO DO - check correct email by regExp
+//checkInput(email, emailReg, emailErrorMsg);
+
+function checkInput(name, reg, err) { //input name, regExp, error message
+    name.addEventListener('change', () => {
+        if (!reg.test(name.value)) {
+            err.innerHTML = `Please add correct data`;
+        } else {
+            err.innerHTML = '';
+        }
     });
+}
+const orderNumber = Math.floor((Math.random() * 1000) + 1);
+const sofasConfirmed = cartItemsArray
+
+//When click 'Comander!'
+document.getElementById('order').addEventListener('click', (event) => {
+    //event.preventDefault();
+    let contact = [
+        firstName.value,
+        lastName.value,
+        address.value,
+        city.value,
+        email.value,
+        sofasConfirmed
+    ];
+
+    localStorage.setItem(orderNumber, JSON.stringify(contact), JSON.stringify(cartItemsArray));
+
+
 });
-*/
