@@ -112,12 +112,14 @@ function showItemsinPage() {
             //Add items in the cart page
             //Go inside each input
             for (const itemQuantityValues of itemQuantityValue) {
-                let selectedQuantityInProduct = Number(itemQuantityValues.value);
+                selectedQuantityInProduct = Number(itemQuantityValues.value);
                 //Adjust any change in the quantity
                 itemQuantityValues.addEventListener('change', function (event) {
                     if (selectedQuantityInProduct < Number(event.target.value)) {
                         sumQuantity++;
                         selectedQuantityInProduct++;
+                        cartItemsArray[i].selectedQuantity = Number(event.target.value);
+                        console.log(cartItemsArray[i].name + ', ' + cartItemsArray[i].selectedQuantity)
                         sumPrice += priceProduct;
                         totalPrice.innerHTML = sumPrice;
                         totalQuantity.innerHTML = sumQuantity;
@@ -125,6 +127,8 @@ function showItemsinPage() {
                     else {
                         sumQuantity--;
                         selectedQuantityInProduct--;
+                        cartItemsArray[i].selectedQuantity = Number(event.target.value);
+                        console.log(cartItemsArray[i].name + ', ' + cartItemsArray[i].selectedQuantity)
                         sumPrice -= priceProduct;
                         totalPrice.innerHTML = sumPrice;
                         totalQuantity.innerHTML = sumQuantity;
@@ -170,13 +174,14 @@ function checkInput(name, reg, err) { //input name, regExp, error message
         }
     });
 }
-const orderNumber = Math.floor((Math.random() * 1000) + 1);
+const order = Math.floor((Math.random() * 1000) + 1);
 const sofasConfirmed = cartItemsArray
 
 //When click 'Comander!'
 document.getElementById('order').addEventListener('click', (event) => {
     //event.preventDefault();
     let contact = [
+        orderNumber = order,
         firstName.value,
         lastName.value,
         address.value,
@@ -185,7 +190,8 @@ document.getElementById('order').addEventListener('click', (event) => {
         sofasConfirmed
     ];
 
-    localStorage.setItem(orderNumber, JSON.stringify(contact), JSON.stringify(cartItemsArray));
+    localStorage.setItem(order, JSON.stringify(contact), JSON.stringify(cartItemsArray));
 
+    window.location.href = "./confirmation.html";
 
 });
