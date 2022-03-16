@@ -15,15 +15,16 @@ const id = document.getElementById('orderId');
 const numbersReg = new RegExp('[^0-9]');
 
 for (let i = 0; i < localStorage.length; i++) {
-    //if (numbersReg.test(localStorage.order(i)) == false) {
-    //const order = localStorage.order(i);
-    const key = localStorage.key(i);
-    console.log(JSON.parse(key));
-    //const sofa = localStorage.getItem(key);
-    contact.push(JSON.parse(contact));
-    cartItemsArray.push(JSON.parse(cartItemsArray));
-    //}
-    id.innerHTML = order;
+    if (localStorage.key(i) > 1) {
+        const key = localStorage.key(i);
+        const orderNumber = localStorage.getItem(key);
+        console.log(numbersReg.test(localStorage.key(i)))
+
+        contact.push(JSON.parse(orderNumber));
+        console.log(contact)
+        id.innerHTML = key;
+    }
+
 }
 
 

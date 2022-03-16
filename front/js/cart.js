@@ -1,25 +1,7 @@
-/**
- * Project 5
- * @author Cristina Picazo Merlos
- * @param {string} title - Project 5
- * @param {string} author - Cristina Picazo Merlos
- * @see https://cristinapicazo.github.io/Kanap/front/html/index.html
- * @returns {Object} 
- */
-function Project5(title, author) { }
-
 //Get itmems from local storeage
-let cartItemsArray = [];
-const numbersReg = new RegExp('[^0-9]');
-for (let i = 0; i < localStorage.length; i++) {
-    if (numbersReg.test(localStorage.key(i)) == true) {
-        const key = localStorage.key(i);
-        console.log(key)
-        console.log(numbersReg.test(key))
-        const sofa = localStorage.getItem(key);
-        cartItemsArray.push(JSON.parse(sofa));
-    }
-}
+const cart = createCart();
+
+
 
 let itemQuantity;
 let totalQuantity = document.getElementById('totalQuantity');
@@ -34,110 +16,70 @@ showItemsinPage();
 
 //Show items in cart
 function showItemsinPage() {
-    for (let i = 0; i < cartItemsArray.length; i++) {
+    for (let i = 0; i < cart.length; i++) {
         let cartItems = document.getElementById('cart__items');
-        if (cartItemsArray[i] != undefined) {
-            cartItems.innerHTML += `
-                                <article class="cart__item" data-id="${cartItemsArray[i]._id}" data-color="${cartItemsArray[i].selectedColor}">
-                                                <div class="cart__item__img">
-                                                <img src=${cartItemsArray[i].imageUrl} alt=${cartItemsArray[i].altTxt}>
-                                                </div>
-                                                <div class="cart__item__content">
-                                                <div class="cart__item__content__description">
-                                                    <h2>${cartItemsArray[i].name}</h2>
-                                                    <p>${cartItemsArray[i].selectedColor}</p>
-                                                    <p>${cartItemsArray[i].price}</p>
-                                                </div>
-                                                <div class="cart__item__content__settings">
-                                                    <div class="cart__item__content__settings__quantity">
-                                                    <p>Qté : </p>
-                                                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${cartItemsArray[i].selectedQuantity}>
-                                                    </div>
-                                                    <div class="cart__item__content__settings__delete">
-                                                    <p class="deleteItem">Delete</p>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </article>
-                                `;
+        if (cart[i] == null) return;
+        cartItems.innerHTML += createArticle(cart[i]);
+        //TO DO
+        //Delete Sofa 
+
+        const currentArticle = document.querySelector(`.cart__item[data-id='${cart[i]._id}'][data-color='${cart[i].selectedColor}']`);
+        console.log(currentArticle);
+        const deleteItem = currentArticle.querySelector('.deleteItem');
+        console.dir(deleteItem)
+        deleteItem.addEventListener('click', function () {
+            console.log(currentArticle);
+            //currentArticle.remove()
+            //localStorage.removeItem(key);
+        });
 
 
-            //TO DO
-            //Delete Sofa 
-            deleteItems = document.querySelectorAll('.deleteItem');
 
-            for (const deleteItem of deleteItems) {
-                //cartItems[i].deleteItem = '';
-                //localStorage.removeItem('key');
-                deleteItem.addEventListener('click', function (event) {
-                    console.log('cartItemsArray[i]._id ' + cartItemsArray[i]._id);
-                    console.log('deleteItem[i] ' + deleteItem[i]);
-                    console.log(deleteItem);
-                    this.style.backgroundColor = "red";
-                });
+        //Totals
+        itemQuantityValue = document.querySelectorAll('input[name="itemQuantity"]');
+        let selectedQuantityInProduct = Number(cart[i].selectedQuantity);
+        let priceProduct = Number(cart[i].price);
 
-            }
-            /*
-            for (let n = 0; n < deleteItems.length; n++) {
-                deleteItems[n].addEventListener('click', function (event) {
-                    //let deleteItemSelected = deleteItem[i];
-                    //const itemToDelete = cartItemsArray[deleteItemSelected];
-                    const sofa = JSON.parse(localStorage.getItem(cartItemsArray[deleteItems[n]]));
-                    console.log('cartItemsArray.length ' + cartItemsArray.length)
-                    console.log('deleteItems[n] ' + deleteItems[n])
-                    console.log('sofa ' + sofa)
-                    alert(event.target);
-                    location.reload();
-                    //showItemsinPage();
-                });
-            };
-            */
+        //Total Price
+        //Show items from products added in cart
+        let total = selectedQuantityInProduct * priceProduct;
+        sumPrice += total;
 
-            //Totals
-            itemQuantityValue = document.querySelectorAll('input[name="itemQuantity"]');
-            let selectedQuantityInProduct = Number(cartItemsArray[i].selectedQuantity);
-            let priceProduct = Number(cartItemsArray[i].price);
+        //Total Items
+        //Show items from products added in cart
+        sumQuantity += selectedQuantityInProduct;
+        totalQuantity.innerHTML = sumQuantity;
+        totalPrice.innerHTML = sumPrice;
 
-            //Total Price
-            //Show items from products added in cart
-            let total = selectedQuantityInProduct * priceProduct;
-            sumPrice += total;
-
-            //Total Items
-            //Show items from products added in cart
-            sumQuantity += selectedQuantityInProduct;
-            totalQuantity.innerHTML = sumQuantity;
-            totalPrice.innerHTML = sumPrice;
-
-            //Add items in the cart page
-            //Go inside each input
-            for (const itemQuantityValues of itemQuantityValue) {
-                selectedQuantityInProduct = Number(itemQuantityValues.value);
-                //Adjust any change in the quantity
-                itemQuantityValues.addEventListener('change', function (event) {
-                    if (selectedQuantityInProduct < Number(event.target.value)) {
-                        sumQuantity++;
-                        selectedQuantityInProduct++;
-                        cartItemsArray[i].selectedQuantity = Number(event.target.value);
-                        console.log(cartItemsArray[i].name + ', ' + cartItemsArray[i].selectedQuantity)
-                        sumPrice += priceProduct;
-                        totalPrice.innerHTML = sumPrice;
-                        totalQuantity.innerHTML = sumQuantity;
-                    }
-                    else {
-                        sumQuantity--;
-                        selectedQuantityInProduct--;
-                        cartItemsArray[i].selectedQuantity = Number(event.target.value);
-                        console.log(cartItemsArray[i].name + ', ' + cartItemsArray[i].selectedQuantity)
-                        sumPrice -= priceProduct;
-                        totalPrice.innerHTML = sumPrice;
-                        totalQuantity.innerHTML = sumQuantity;
-                    }
-                })
-            }
+        //Add items in the cart page
+        //Go inside each input
+        for (const itemQuantityValues of itemQuantityValue) {
+            selectedQuantityInProduct = Number(itemQuantityValues.value);
+            //Adjust any change in the quantity
+            itemQuantityValues.addEventListener('change', function (event) {
+                if (selectedQuantityInProduct < Number(event.target.value)) {
+                    sumQuantity++;
+                    selectedQuantityInProduct++;
+                    cart[i].selectedQuantity = Number(event.target.value);
+                    console.log(cart[i].name + ', ' + cart[i].selectedQuantity)
+                    sumPrice += priceProduct;
+                    totalPrice.innerHTML = sumPrice;
+                    totalQuantity.innerHTML = sumQuantity;
+                }
+                else {
+                    sumQuantity--;
+                    selectedQuantityInProduct--;
+                    cart[i].selectedQuantity = Number(event.target.value);
+                    console.log(cart[i].name + ', ' + cart[i].selectedQuantity)
+                    sumPrice -= priceProduct;
+                    totalPrice.innerHTML = sumPrice;
+                    totalQuantity.innerHTML = sumQuantity;
+                }
+            })
         }
     }
 }
+
 
 
 //Order Sofa
@@ -175,11 +117,11 @@ function checkInput(name, reg, err) { //input name, regExp, error message
     });
 }
 const order = Math.floor((Math.random() * 1000) + 1);
-const sofasConfirmed = cartItemsArray
+const sofasConfirmed = cart
 
 //When click 'Comander!'
 document.getElementById('order').addEventListener('click', (event) => {
-    //event.preventDefault();
+    event.preventDefault();
     let contact = [
         orderNumber = order,
         firstName.value,
@@ -190,8 +132,44 @@ document.getElementById('order').addEventListener('click', (event) => {
         sofasConfirmed
     ];
 
-    localStorage.setItem(order, JSON.stringify(contact), JSON.stringify(cartItemsArray));
+    localStorage.setItem(order, JSON.stringify(contact));
 
-    window.location.href = "./confirmation.html";
+    window.location.href = "../html/confirmation.html";
 
 });
+
+function createCart() {
+    const cart = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const sofa = localStorage.getItem(key);
+        cart.push(JSON.parse(sofa));
+    }
+    return cart;
+}
+
+function createArticle(sofa) {
+    return `
+    <article class="cart__item" data-id="${sofa._id}" data-color="${sofa.selectedColor}">
+                    <div class="cart__item__img">
+                    <img src=${sofa.imageUrl} alt=${sofa.altTxt}>
+                    </div>
+                    <div class="cart__item__content">
+                    <div class="cart__item__content__description">
+                        <h2>${sofa.name}</h2>
+                        <p>${sofa.selectedColor}</p>
+                        <p>${sofa.price}</p>
+                    </div>
+                    <div class="cart__item__content__settings">
+                        <div class="cart__item__content__settings__quantity">
+                        <p>Qté : </p>
+                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${sofa.selectedQuantity}>
+                        </div>
+                        <div class="cart__item__content__settings__delete">
+                        <p class="deleteItem">Delete</p>
+                        </div>
+                    </div>
+                    </div>
+                </article>
+    `;
+}
