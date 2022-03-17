@@ -1,8 +1,6 @@
 //Get itmems from local storeage
 const cart = createCart();
 
-
-
 let itemQuantity;
 let totalQuantity = document.getElementById('totalQuantity');
 let sumQuantity = 0;
@@ -17,20 +15,18 @@ showItemsinPage();
 //Show items in cart
 function showItemsinPage() {
     for (let i = 0; i < cart.length; i++) {
-        let cartItems = document.getElementById('cart__items');
-        if (cart[i] == null) return;
-        cartItems.innerHTML += createArticle(cart[i]);
-        //TO DO
-        //Delete Sofa 
+        let cartItems = document.getElementById("cart__items");
+        if (cartItems == null) return
+        if (cart[i] == null) return
+        const article = createArticle(cart[i]);
+        cartItems.appendChild(article);
 
-        const currentArticle = document.querySelector(`.cart__item[data-id='${cart[i]._id}'][data-color='${cart[i].selectedColor}']`);
-        console.log(currentArticle);
-        const deleteItem = currentArticle.querySelector('.deleteItem');
-        console.dir(deleteItem)
-        deleteItem.addEventListener('click', function () {
-            console.log(currentArticle);
-            //currentArticle.remove()
-            //localStorage.removeItem(key);
+        const deleteButton = article.querySelector(".deleteItem");
+        deleteButton.addEventListener("click", () => {
+            console.log("id", article.dataset.id);
+            console.log("color", article.dataset.color);
+            console.log("article", article);
+            cart.splice(1, article);
         });
 
 
@@ -149,8 +145,11 @@ function createCart() {
 }
 
 function createArticle(sofa) {
-    return `
-    <article class="cart__item" data-id="${sofa._id}" data-color="${sofa.selectedColor}">
+    const article = document.createElement("article");
+    article.classList.add("cart__item");
+    article.setAttribute("data-id", sofa._id);
+    article.setAttribute("data-color", sofa.selectedColor);
+    article.innerHTML = `
                     <div class="cart__item__img">
                     <img src=${sofa.imageUrl} alt=${sofa.altTxt}>
                     </div>
@@ -171,5 +170,6 @@ function createArticle(sofa) {
                     </div>
                     </div>
                 </article>
-    `;
+    `
+    return article;
 }
