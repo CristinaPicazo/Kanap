@@ -1,16 +1,18 @@
 //Get itmems from local storeage
 const cart = createCart();
 
-let itemQuantity;
-let totalQuantity = document.getElementById('totalQuantity');
-let sumQuantity = 0;
-let totalPrice = document.getElementById('totalPrice');
-let sumPrice = 0;
-let deleteItems;
-let numToDelete;
-let itemQuantityValue;
 showItemsinPage();
+total();
 
+function updateQuantity(id, quantity) {
+    for (let i = 0; i < cart.length; i++) {
+        if (cart[i]._id == id) {
+            console.log('antes ' + cart[i].selectedQuantity)
+            cart[i].selectedQuantity = Number(quantity);
+            console.log('despues ' + cart[i].selectedQuantity)
+        }
+    }
+}
 
 //Show items in cart
 function showItemsinPage() {
@@ -18,63 +20,50 @@ function showItemsinPage() {
         let cartItems = document.getElementById("cart__items");
         if (cartItems == null) return
         if (cart[i] == null) return
+        if (cart[i] == undefined) return
         const article = createArticle(cart[i]);
         cartItems.appendChild(article);
 
         const deleteButton = article.querySelector(".deleteItem");
         deleteButton.addEventListener("click", () => {
-            console.log("id", article.dataset.id);
-            console.log("color", article.dataset.color);
-            console.log("article", article);
-            cart.splice(1, article);
+            console.log(cart);
+            cart.splice(i, 1);
+            console.log(cart);
+            const key = article.dataset.id + ":" + article.dataset.selectedColor;
+            console.log('article.dataset.id ' + article.dataset.id);
+            console.log('article.dataset.selectedColor ' + article.dataset.selectedColor);
+            localStorage.setItem(key, JSON.stringify(cart));
+            window.localStorage.removeItem(key);
         });
+    }
+}
 
-
-
-        //Totals
-        itemQuantityValue = document.querySelectorAll('input[name="itemQuantity"]');
-        let selectedQuantityInProduct = Number(cart[i].selectedQuantity);
-        let priceProduct = Number(cart[i].price);
-
-        //Total Price
-        //Show items from products added in cart
-        let total = selectedQuantityInProduct * priceProduct;
-        sumPrice += total;
-
-        //Total Items
-        //Show items from products added in cart
-        sumQuantity += selectedQuantityInProduct;
+function total() {
+    //Totals
+    const totalQuantity = document.getElementById('totalQuantity');
+    const totalPrice = document.getElementById('totalPrice');
+    let sumQuantity = 0;
+    let sumPrice = 0;
+    for (let i = 0; i < cart.length; i++) {
+        sumQuantity += cart[i].selectedQuantity;
+        sumPrice += (cart[i].selectedQuantity * cart[i].price);
         totalQuantity.innerHTML = sumQuantity;
         totalPrice.innerHTML = sumPrice;
 
-        //Add items in the cart page
-        //Go inside each input
-        for (const itemQuantityValues of itemQuantityValue) {
-            selectedQuantityInProduct = Number(itemQuantityValues.value);
-            //Adjust any change in the quantity
-            itemQuantityValues.addEventListener('change', function (event) {
-                if (selectedQuantityInProduct < Number(event.target.value)) {
-                    sumQuantity++;
-                    selectedQuantityInProduct++;
-                    cart[i].selectedQuantity = Number(event.target.value);
-                    console.log(cart[i].name + ', ' + cart[i].selectedQuantity)
-                    sumPrice += priceProduct;
-                    totalPrice.innerHTML = sumPrice;
-                    totalQuantity.innerHTML = sumQuantity;
-                }
-                else {
-                    sumQuantity--;
-                    selectedQuantityInProduct--;
-                    cart[i].selectedQuantity = Number(event.target.value);
-                    console.log(cart[i].name + ', ' + cart[i].selectedQuantity)
-                    sumPrice -= priceProduct;
-                    totalPrice.innerHTML = sumPrice;
-                    totalQuantity.innerHTML = sumQuantity;
-                }
-            })
-        }
+    }
+
+    //let itemQuantityValue = document.querySelector("input[name='itemQuantity']");
+    let itemQuantityValue = document.querySelectorAll(".itemQuantity");
+    for (let itemQuantityValues of itemQuantityValue) {
+        itemQuantityValues.addEventListener('change', (event) => {
+            const idDelte = event.target.closest(".cart__item");
+            updateQuantity(idDelte.dataset.id, itemQuantityValues.value);
+            total();
+
+        });
     }
 }
+
 
 
 
@@ -111,28 +100,30 @@ function checkInput(name, reg, err) { //input name, regExp, error message
             err.innerHTML = '';
         }
     });
+
+
+    const order = Math.floor((Math.random() * 1000) + 1);
+    const sofasConfirmed = cart
+
+    //When click 'Comander!'
+    document.getElementById('order').addEventListener('click', (event) => {
+        event.preventDefault();
+        let contact = [
+            orderNumber = order,
+            firstName.value,
+            lastName.value,
+            address.value,
+            city.value,
+            email.value,
+            sofasConfirmed
+        ];
+
+        localStorage.setItem(order, JSON.stringify(contact));
+
+        window.location.href = "../html/confirmation.html";
+
+    });
 }
-const order = Math.floor((Math.random() * 1000) + 1);
-const sofasConfirmed = cart
-
-//When click 'Comander!'
-document.getElementById('order').addEventListener('click', (event) => {
-    event.preventDefault();
-    let contact = [
-        orderNumber = order,
-        firstName.value,
-        lastName.value,
-        address.value,
-        city.value,
-        email.value,
-        sofasConfirmed
-    ];
-
-    localStorage.setItem(order, JSON.stringify(contact));
-
-    window.location.href = "../html/confirmation.html";
-
-});
 
 function createCart() {
     const cart = [];
@@ -171,5 +162,5 @@ function createArticle(sofa) {
                     </div>
                 </article>
     `
-    return article;
+    return article
 }
