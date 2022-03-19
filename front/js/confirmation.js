@@ -7,7 +7,7 @@
  * @returns {Object} 
  */
 function Project5(title, author) { }
-
+/*
 //Get itmems from local storeage
 const cartItemsArray = [];
 const contact = [];
@@ -26,6 +26,30 @@ for (let i = 0; i < localStorage.length; i++) {
     }
 
 }
+*/
+
+
+
+//Taken id from hombe page
+const orderNumber = window.location.search.split('=').at(-1);
+//Taken data from back
+//const url = `http://127.0.0.1:3000/api/cart/${orderNumber}`;
+const url = `http://127.0.0.1:5500/html/cart`;
+fetch(url)
+    .then(response => {
+        const json = response.json()
+        return json;
+    })
+    .then(data => {
+        displayItem(data)
+        orderNumber = data;
+    })
+    .catch(err => console.log(err))
+
+const orderId = document.getElementById('orderId');
+orderId.innerHTML = 'orderNumber';
+
+
 
 
 
