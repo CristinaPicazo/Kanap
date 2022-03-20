@@ -89,9 +89,9 @@ function total() {
     let itemQuantityValue = document.querySelectorAll(".itemQuantity");
     for (let itemQuantityValues of itemQuantityValue) {
         itemQuantityValues.addEventListener('change', (event) => {
-            const idDelte = event.target.closest(".cart__item");
-            updateQuantity(idDelte.dataset.id, itemQuantityValues.value);
-            total();
+            const idDelete = event.target.closest(".cart__item");
+            updateQuantity(idDelete.dataset.id, itemQuantityValues.value);
+            //total();
 
         });
     }
@@ -117,25 +117,46 @@ function checkForm() {
     const firstName = document.getElementById('firstName');
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
     const noNumbers = new RegExp('^[a-z]*$');
-    checkInput(firstName, noNumbers, firstNameErrorMsg);
+    firstName.addEventListener('change', () => {
+        checkInput(firstName, noNumbers, firstNameErrorMsg, "first name");
+    });
 
     const lastName = document.getElementById('lastName');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
-    checkInput(lastName, noNumbers, lastNameErrorMsg);
-
+    lastName.addEventListener('change', () => {
+        checkInput(lastName, noNumbers, lastNameErrorMsg, "name");
+    });
     const address = document.getElementById('address');
     const addressErrorMsg = document.getElementById('addressErrorMsg');
-    //checkInput(address, noNumbers, addressErrorMsg);
-
+    address.addEventListener('change', () => {
+        //checkInput(address, noNumbers, addressErrorMsg, "address");
+    });
     const city = document.getElementById('city');
     const cityErrorMsg = document.getElementById('cityErrorMsg');
-    checkInput(city, noNumbers, cityErrorMsg);
-
+    city.addEventListener('change', () => {
+        checkInput(city, noNumbers, cityErrorMsg, "city");
+    });
     const email = document.getElementById('email');
     const emailErrorMsg = document.getElementById('emailErrorMsg');
     const emailReg = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+    email.addEventListener('change', () => {
+        //checkInput(email, emailReg, emailErrorMsg, "email");
+    });
+}
+
+//Alwasy false?????
+function checkInput(name, reg, err, text) {
+    if (reg.test(name) == false) {
+        console.log(reg.test(name))
+        err.innerHTML = "Please add correct " + text;
+    }
+    else {
+        err.innerHTML = " ";
+    }
+
 
 }
+
 
 function sendForm() {
     document.getElementById('order').addEventListener('click', () => {
