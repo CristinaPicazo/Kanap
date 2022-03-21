@@ -1,10 +1,10 @@
 //Get itmems from local storeage
 const cart = createCart();
-
 showItemsinPage();
 total();
 checkForm();
-sendForm();
+order();
+changeQuantities()
 
 
 function createCart() {
@@ -51,22 +51,15 @@ function createArticle(sofa) {
 function showItemsinPage() {
     for (let i = 0; i < cart.length; i++) {
         let cartItems = document.getElementById("cart__items");
-        if (cartItems == null) return
-        if (cart[i] == null) return
-        if (cart[i] == undefined) return
         const article = createArticle(cart[i]);
         cartItems.appendChild(article);
 
+        //delete items
         const deleteButton = article.querySelector(".deleteItem");
         deleteButton.addEventListener("click", () => {
-            console.log(cart);
-            cart.splice(i, 1);
-            console.log(cart);
-            const key = article.dataset.id + ":" + article.dataset.selectedColor;
-            console.log('article.dataset.id ' + article.dataset.id);
-            console.log('article.dataset.selectedColor ' + article.dataset.selectedColor);
-            localStorage.setItem(key, JSON.stringify(cart));
+            const key = article.dataset.id + ":" + article.dataset.color;
             window.localStorage.removeItem(key);
+            window.location.reload()
         });
     }
 }
@@ -85,13 +78,13 @@ function total() {
 
     }
 
-    //let itemQuantityValue = document.querySelector("input[name='itemQuantity']");
+}
+function changeQuantities() {
     let itemQuantityValue = document.querySelectorAll(".itemQuantity");
     for (let itemQuantityValues of itemQuantityValue) {
         itemQuantityValues.addEventListener('change', (event) => {
             const idDelete = event.target.closest(".cart__item");
             updateQuantity(idDelete.dataset.id, itemQuantityValues.value);
-            //total();
 
         });
     }
@@ -99,10 +92,9 @@ function total() {
 
 function updateQuantity(id, quantity) {
     for (let i = 0; i < cart.length; i++) {
-        if (cart[i]._id == id) {
-            console.log('antes ' + cart[i].selectedQuantity)
+        if (cart[i]._id === id) {
             cart[i].selectedQuantity = Number(quantity);
-            console.log('despues ' + cart[i].selectedQuantity)
+            total();
         }
     }
 }
@@ -113,6 +105,7 @@ function updateQuantity(id, quantity) {
 
 //Order Sofa
 function checkForm() {
+    //order.disabled = true;
 
     const firstName = document.getElementById('firstName');
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
@@ -138,31 +131,30 @@ function checkForm() {
     });
     const email = document.getElementById('email');
     const emailErrorMsg = document.getElementById('emailErrorMsg');
-    const emailReg = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+    const emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
     email.addEventListener('change', () => {
-        //checkInput(email, emailReg, emailErrorMsg, "email");
+        checkInput(email, emailReg, emailErrorMsg, "email");
     });
 }
 
-//Alwasy false?????
+
 function checkInput(name, reg, err, text) {
-    if (reg.test(name) == false) {
-        console.log(reg.test(name))
+    if (reg.test(name.value) == false) {
+        console.log(reg.test(name.value))
         err.innerHTML = "Please add correct " + text;
     }
     else {
         err.innerHTML = " ";
     }
-
-
 }
+function order() {
+    const order = document.getElementById('order');
+    order.addEventListener('click', () => {
 
-
-function sendForm() {
-    document.getElementById('order').addEventListener('click', () => {
+        //event.preventDefault();
         const orderNumber = Math.floor((Math.random() * 1000) + 1);
         window.location.href = "../html/confirmation.html";
-        //window.location.href = "http://127.0.0.1:5500/html/confirmation";
+        //window.location.href = window.location.href + orderNumber;
 
     });
 }
