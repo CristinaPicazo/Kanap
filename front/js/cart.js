@@ -3,8 +3,8 @@ const cart = createCart();
 showItemsinPage();
 total();
 checkForm();
-order();
 changeQuantities()
+Order();
 
 
 function createCart() {
@@ -49,23 +49,24 @@ function createArticle(sofa) {
 
 //Show items in cart
 function showItemsinPage() {
+    const cartItems = document.getElementById("cart__items");
     for (let i = 0; i < cart.length; i++) {
-        let cartItems = document.getElementById("cart__items");
         const article = createArticle(cart[i]);
         cartItems.appendChild(article);
-
-        //delete items
-        const deleteButton = article.querySelector(".deleteItem");
-        deleteButton.addEventListener("click", () => {
-            const key = article.dataset.id + ":" + article.dataset.color;
-            window.localStorage.removeItem(key);
-            window.location.reload()
-        });
+        deleteButton(article);
     }
+}
+//delete items
+function deleteButton(article) {
+    const deleteButton = article.querySelector(".deleteItem");
+    deleteButton.addEventListener("click", () => {
+        const key = article.dataset.id + ":" + article.dataset.color;
+        window.localStorage.removeItem(key);
+        window.location.reload()
+    });
 }
 
 function total() {
-    //Totals
     const totalQuantity = document.getElementById('totalQuantity');
     const totalPrice = document.getElementById('totalPrice');
     let sumQuantity = 0;
@@ -109,10 +110,11 @@ function checkForm() {
 
     const firstName = document.getElementById('firstName');
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-    const noNumbers = new RegExp('^[a-z]*$');
+    const noNumbers = new RegExp(/^[a-z]*$/);
     firstName.addEventListener('change', () => {
         checkInput(firstName, noNumbers, firstNameErrorMsg, "first name");
     });
+
 
     const lastName = document.getElementById('lastName');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
@@ -147,7 +149,25 @@ function checkInput(name, reg, err, text) {
         err.innerHTML = " ";
     }
 }
-function order() {
+
+function Order() {
+    document.getElementById("order").addEventListener('click', (event) => {
+        /*
+        const areAllFieldsValid = fields.every(checkInput)
+        if (!areAllFieldsValid) {
+            event.preventDefault();
+            return;
+        }
+        */
+        sendOrder()
+    });
+}
+
+function sendOrder() {
+    /*
+    const url = "http://127.0.0.1:300/api/products/order";
+    //let body={contact, product} 
+    //fetch(url,body)
     const order = document.getElementById('order');
     order.addEventListener('click', () => {
 
@@ -155,8 +175,32 @@ function order() {
         const orderNumber = Math.floor((Math.random() * 1000) + 1);
         window.location.href = "../html/confirmation.html";
         //window.location.href = window.location.href + orderNumber;
-
     });
+*/
+    const body = {
+        contact: {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            address: address.value,
+            city: city.value,
+            email: email.value
+        },
+        //products: getIdsFromCart(cart)
+    }
+    const url = `http://127.0.0.1:3000/api/products/order`;
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const orderId = data.orderId
+            window.location.href = "../html/confirmation.html?orderId=" + orderId
+        })
+        .catch((err) => alert(err))
 }
 
 
