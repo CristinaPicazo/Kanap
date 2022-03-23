@@ -1,11 +1,7 @@
 //Get itmems from local storeage
 const cart = createCart();
 showItemsinPage();
-total();
-checkForm();
-changeQuantities()
-Order();
-
+order();
 
 function createCart() {
     const cart = [];
@@ -16,6 +12,26 @@ function createCart() {
     }
     return cart;
 }
+
+function showItemsinPage() {
+    const cartItems = document.getElementById("cart__items");
+    if (cartItems == null) return;
+    for (const sofa of cart) {
+        const article = createArticle(sofa);
+        cartItems.appendChild(article);
+
+        // makeDeleteFunction(article)
+        // listenToQuantityChange(article)
+        // updateItemQuantity(sofa)
+        // updateTotalPrice(sofa)
+        // UpdateTotalQuaqntity(cart)
+
+        totalListener(article, sofa)
+        deleteButton(article);
+    }
+    total(cart);
+}
+
 
 function createArticle(sofa) {
     const article = document.createElement("article");
@@ -47,16 +63,34 @@ function createArticle(sofa) {
     return article
 }
 
-//Show items in cart
-function showItemsinPage() {
-    const cartItems = document.getElementById("cart__items");
-    for (let i = 0; i < cart.length; i++) {
-        const article = createArticle(cart[i]);
-        cartItems.appendChild(article);
-        deleteButton(article);
-    }
+function total(sofa) {
+    let numberOfSofas = 0;
+    let totalPriceSofas = 0;
+
+    sofa.forEach(sofa => {
+        numberOfSofas += sofa.selectedQuantity;
+        totalPriceSofas += sofa.selectedQuantity * sofa.price;
+    });
+
+    updateTotal(numberOfSofas, totalPriceSofas);
 }
-//delete items
+
+function updateTotal(numberOfSofas, totalPriceSofas) {
+    const totalQuantity = document.getElementById('totalQuantity');
+    const totalPrice = document.getElementById('totalPrice');
+
+    totalQuantity.innerHTML = numberOfSofas;
+    totalPrice.innerHTML = totalPriceSofas;
+}
+
+function totalListener(article, sofa) {
+    article.querySelector('.itemQuantity').addEventListener('change', (event) => {
+        sofa.selectedQuantity = Number(event.target.value);
+        cart.selectedQuantity = sofa.selectedQuantity
+        total(cart);
+    });
+}
+
 function deleteButton(article) {
     const deleteButton = article.querySelector(".deleteItem");
     deleteButton.addEventListener("click", () => {
@@ -66,47 +100,12 @@ function deleteButton(article) {
     });
 }
 
-function total() {
-    const totalQuantity = document.getElementById('totalQuantity');
-    const totalPrice = document.getElementById('totalPrice');
-    let sumQuantity = 0;
-    let sumPrice = 0;
-    for (let i = 0; i < cart.length; i++) {
-        sumQuantity += cart[i].selectedQuantity;
-        sumPrice += (cart[i].selectedQuantity * cart[i].price);
-        totalQuantity.innerHTML = sumQuantity;
-        totalPrice.innerHTML = sumPrice;
-
-    }
-
-}
-function changeQuantities() {
-    let itemQuantityValue = document.querySelectorAll(".itemQuantity");
-    for (let itemQuantityValues of itemQuantityValue) {
-        itemQuantityValues.addEventListener('change', (event) => {
-            const idDelete = event.target.closest(".cart__item");
-            updateQuantity(idDelete.dataset.id, itemQuantityValues.value);
-
-        });
-    }
-}
-
-function updateQuantity(id, quantity) {
-    for (let i = 0; i < cart.length; i++) {
-        if (cart[i]._id === id) {
-            cart[i].selectedQuantity = Number(quantity);
-            total();
-        }
-    }
-}
-
 
 
 
 
 //Order Sofa
-function checkForm() {
-    //order.disabled = true;
+function sendForm() {
 
     const firstName = document.getElementById('firstName');
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
@@ -114,7 +113,6 @@ function checkForm() {
     firstName.addEventListener('change', () => {
         checkInput(firstName, noNumbers, firstNameErrorMsg, "first name");
     });
-
 
     const lastName = document.getElementById('lastName');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
@@ -137,8 +135,8 @@ function checkForm() {
     email.addEventListener('change', () => {
         checkInput(email, emailReg, emailErrorMsg, "email");
     });
-}
 
+}
 
 function checkInput(name, reg, err, text) {
     if (reg.test(name.value) == false) {
@@ -150,7 +148,7 @@ function checkInput(name, reg, err, text) {
     }
 }
 
-function Order() {
+function order() {
     document.getElementById("order").addEventListener('click', (event) => {
         /*
         const areAllFieldsValid = fields.every(checkInput)
@@ -164,19 +162,6 @@ function Order() {
 }
 
 function sendOrder() {
-    /*
-    const url = "http://127.0.0.1:300/api/products/order";
-    //let body={contact, product} 
-    //fetch(url,body)
-    const order = document.getElementById('order');
-    order.addEventListener('click', () => {
-
-        //event.preventDefault();
-        const orderNumber = Math.floor((Math.random() * 1000) + 1);
-        window.location.href = "../html/confirmation.html";
-        //window.location.href = window.location.href + orderNumber;
-    });
-*/
     const body = {
         contact: {
             firstName: firstName.value,
@@ -197,7 +182,7 @@ function sendOrder() {
     })
         .then((response) => response.json())
         .then((data) => {
-            const orderId = data.orderId
+            const orderId = Math.floor(Math.random() * 100);
             window.location.href = "../html/confirmation.html?orderId=" + orderId
         })
         .catch((err) => alert(err))
