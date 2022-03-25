@@ -39,26 +39,26 @@ function createArticle(sofa) {
     article.setAttribute("data-id", sofa._id);
     article.setAttribute("data-color", sofa.selectedColor);
     article.innerHTML = `
-                    <div class="cart__item__img">
-                    <img src=${sofa.imageUrl} alt=${sofa.altTxt}>
-                    </div>
-                    <div class="cart__item__content">
-                    <div class="cart__item__content__description">
-                        <h2>${sofa.name}</h2>
-                        <p>${sofa.selectedColor}</p>
-                        <p>${sofa.price}</p>
-                    </div>
-                    <div class="cart__item__content__settings">
-                        <div class="cart__item__content__settings__quantity">
-                        <p>Qté : </p>
-                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${sofa.selectedQuantity}>
-                        </div>
-                        <div class="cart__item__content__settings__delete">
-                        <p class="deleteItem">Delete</p>
-                        </div>
-                    </div>
-                    </div>
-                </article>
+    <div class="cart__item__img">
+    <img src=${sofa.imageUrl} alt=${sofa.altTxt}>
+    </div>
+    <div class="cart__item__content">
+    <div class="cart__item__content__description">
+    <h2>${sofa.name}</h2>
+    <p>${sofa.selectedColor}</p>
+    <p>${sofa.price}</p>
+    </div>
+    <div class="cart__item__content__settings">
+    <div class="cart__item__content__settings__quantity">
+    <p>Qté : </p>
+    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${sofa.selectedQuantity}>
+    </div>
+    <div class="cart__item__content__settings__delete">
+    <p class="deleteItem">Delete</p>
+    </div>
+    </div>
+    </div>
+    </article>
     `
     return article
 }
@@ -136,7 +136,16 @@ function sendForm() {
         checkInput(email, emailReg, emailErrorMsg, "email");
     });
 
+    const fields = [firstName, lastName, address, city, email];
+
+    areAllFieldsValid(fields)
 }
+function areAllFieldsValid(fields) {
+    fields.every(checkInput)
+    return true;
+}
+
+
 
 function checkInput(name, reg, err, text) {
     if (reg.test(name.value) == false) {
@@ -150,13 +159,8 @@ function checkInput(name, reg, err, text) {
 
 function order() {
     document.getElementById("order").addEventListener('click', (event) => {
-        /*
-        const areAllFieldsValid = fields.every(checkInput)
-        if (!areAllFieldsValid) {
-            event.preventDefault();
-            return;
-        }
-        */
+        if (!areAllFieldsValid) return;
+        if (cart.length === 0) return
         sendOrder()
     });
 }
@@ -170,7 +174,7 @@ function sendOrder() {
             city: city.value,
             email: email.value
         },
-        //products: getIdsFromCart(cart)
+        products: cart._id
     }
     const url = `http://127.0.0.1:3000/api/products/order`;
     fetch(url, {
@@ -182,7 +186,7 @@ function sendOrder() {
     })
         .then((response) => response.json())
         .then((data) => {
-            const orderId = Math.floor(Math.random() * 100);
+            const orderId = data.orderId;
             window.location.href = "../html/confirmation.html?orderId=" + orderId
         })
         .catch((err) => alert(err))
