@@ -1,7 +1,7 @@
 //Get itmems from local storeage
 const cart = createCart();
 showItemsinPage();
-order();
+checkForm()
 
 function createCart() {
     const cart = [];
@@ -19,12 +19,6 @@ function showItemsinPage() {
     for (const sofa of cart) {
         const article = createArticle(sofa);
         cartItems.appendChild(article);
-
-        // makeDeleteFunction(article)
-        // listenToQuantityChange(article)
-        // updateItemQuantity(sofa)
-        // updateTotalPrice(sofa)
-        // UpdateTotalQuaqntity(cart)
 
         totalListener(article, sofa)
         deleteButton(article);
@@ -105,67 +99,77 @@ function deleteButton(article) {
 
 
 //Order Sofa
-function sendForm() {
-
-    const firstName = document.getElementById('firstName');
-    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-    const noNumbers = new RegExp(/^[a-z]*$/);
-    firstName.addEventListener('change', () => {
-        checkInput(firstName, noNumbers, firstNameErrorMsg, "first name");
-    });
-
+function checkForm() {
+    const order = document.getElementById("order").disabled = true;
+    //Name
+    const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName');
-    const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
-    lastName.addEventListener('change', () => {
-        checkInput(lastName, noNumbers, lastNameErrorMsg, "name");
-    });
     const address = document.getElementById('address');
-    const addressErrorMsg = document.getElementById('addressErrorMsg');
-    address.addEventListener('change', () => {
-        //checkInput(address, noNumbers, addressErrorMsg, "address");
-    });
     const city = document.getElementById('city');
-    const cityErrorMsg = document.getElementById('cityErrorMsg');
-    city.addEventListener('change', () => {
-        checkInput(city, noNumbers, cityErrorMsg, "city");
-    });
     const email = document.getElementById('email');
-    const emailErrorMsg = document.getElementById('emailErrorMsg');
+
+    //Regex
+    const noNumbers = new RegExp(/^[A-Za-z ]*$/);
+    const noSymbols = new RegExp(/^[A-Za-z0-9 ]*$/);
     const emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-    email.addEventListener('change', () => {
-        checkInput(email, emailReg, emailErrorMsg, "email");
-    });
 
-    const fields = [firstName, lastName, address, city, email];
+    //Error
+    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+    const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
+    const addressErrorMsg = document.getElementById('addressErrorMsg');
+    const cityErrorMsg = document.getElementById('cityErrorMsg');
+    const emailErrorMsg = document.getElementById('emailErrorMsg');
 
-    areAllFieldsValid(fields)
+    //console.log('checkinput ', checkInput(firstName, noNumbers, firstNameErrorMsg, 'name'))
+    const fields = { firstName, lastName, address, city, email }
+    console.log('fields:', fields)
+    console.log('firstName:', firstName)
+    firstName.addEventListener('change', () => {
+        if (checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')) return;
+        if (checkInput(lastName.value, noNumbers, lastNameErrorMsg, 'last name')) return;
+        if (checkInput(address.value, noSymbols, addressErrorMsg, 'address')) return;
+        if (checkInput(city.value, noNumbers, cityErrorMsg, 'city')) return;
+        if (checkInput(email.value, emailReg, emailErrorMsg, 'email')) return;
+    })
+    //Check fields    
+
+    console.log('order to send')
+    //order();
+
+    order.disabled = false;
 }
-function areAllFieldsValid(fields) {
-    fields.every(checkInput)
-    return true;
-}
 
-
-
-function checkInput(name, reg, err, text) {
-    if (reg.test(name.value) == false) {
-        console.log(reg.test(name.value))
-        err.innerHTML = "Please add correct " + text;
+function checkInput(name, regex, error, text) {
+    if (regex.test(name.value) == false) {
+        error.innerHTML = 'Please add correct ', text;
+    } else {
+        error.innerHTML = ''
+        return true;
     }
-    else {
-        err.innerHTML = " ";
-    }
 }
+
 
 function order() {
     document.getElementById("order").addEventListener('click', (event) => {
-        if (!areAllFieldsValid) return;
+        event.preventDefault()
         if (cart.length === 0) return
-        sendOrder()
+        checkForm()
+        //sendOrder()
+
+
     });
 }
 
+function mapCartToIds(cart) {
+    const ids = [];
+    for (const sofa of cart) {
+        ids.push(sofa._id)
+    }
+    return ids;
+}
+
 function sendOrder() {
+
     const body = {
         contact: {
             firstName: firstName.value,
@@ -174,8 +178,9 @@ function sendOrder() {
             city: city.value,
             email: email.value
         },
-        products: cart._id
+        products: mapCartToIds(cart)
     }
+
     const url = `http://127.0.0.1:3000/api/products/order`;
     fetch(url, {
         method: "POST",
