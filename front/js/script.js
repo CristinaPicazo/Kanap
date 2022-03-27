@@ -8,7 +8,7 @@
  */
 function Project5(title, author) { }
 
-//Taken data from back
+//Takes data from backend
 const url = 'http://127.0.0.1:3000/api/products';
 fetch(url)
     .then(response => {
@@ -20,7 +20,7 @@ fetch(url)
     })
     .catch(err => console.log(err))
 
-//Display items from back (fetch)
+//Displays items from backend (fetch)
 function displayItems(sofas) {
     const section = document.getElementById('items')
 

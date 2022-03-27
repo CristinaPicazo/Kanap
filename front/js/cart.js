@@ -1,8 +1,9 @@
-//Get itmems from local storeage
+// Create cart from localStorage
 const cart = createCart();
 showItemsinPage();
 checkForm()
 
+// Get data from localStorage to show it in the page
 function createCart() {
     const cart = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -13,6 +14,7 @@ function createCart() {
     return cart;
 }
 
+// Display selected items from product page
 function showItemsinPage() {
     const cartItems = document.getElementById("cart__items");
     if (cartItems == null) return;
@@ -26,7 +28,7 @@ function showItemsinPage() {
     total(cart);
 }
 
-
+// Show sofas within html
 function createArticle(sofa) {
     const article = document.createElement("article");
     article.classList.add("cart__item");
@@ -57,6 +59,7 @@ function createArticle(sofa) {
     return article
 }
 
+// Show total amount of sofas and price
 function total(sofa) {
     let numberOfSofas = 0;
     let totalPriceSofas = 0;
@@ -69,6 +72,7 @@ function total(sofa) {
     updateTotal(numberOfSofas, totalPriceSofas);
 }
 
+// If add or subtrack any sofa, update the amount and price
 function updateTotal(numberOfSofas, totalPriceSofas) {
     const totalQuantity = document.getElementById('totalQuantity');
     const totalPrice = document.getElementById('totalPrice');
@@ -77,6 +81,7 @@ function updateTotal(numberOfSofas, totalPriceSofas) {
     totalPrice.innerHTML = totalPriceSofas;
 }
 
+// Listen any change of the amount of sofas
 function totalListener(article, sofa) {
     article.querySelector('.itemQuantity').addEventListener('change', (event) => {
         sofa.selectedQuantity = Number(event.target.value);
@@ -85,6 +90,7 @@ function totalListener(article, sofa) {
     });
 }
 
+// Delete sofa click the button
 function deleteButton(article) {
     const deleteButton = article.querySelector(".deleteItem");
     deleteButton.addEventListener("click", () => {
@@ -94,15 +100,11 @@ function deleteButton(article) {
     });
 }
 
-
-
-
-
-//Order Sofa
+//Check if the form is correct to be sent
 function checkForm() {
     const order = document.getElementById("order").disabled = true;
     //Name
-    const firstName = document.getElementById('firstName').value;
+    const firstName = document.getElementById('firstName');
     const lastName = document.getElementById('lastName');
     const address = document.getElementById('address');
     const city = document.getElementById('city');
@@ -114,52 +116,71 @@ function checkForm() {
     const emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
     //Error
-    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+    let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
     const addressErrorMsg = document.getElementById('addressErrorMsg');
     const cityErrorMsg = document.getElementById('cityErrorMsg');
     const emailErrorMsg = document.getElementById('emailErrorMsg');
 
     //console.log('checkinput ', checkInput(firstName, noNumbers, firstNameErrorMsg, 'name'))
-    const fields = { firstName, lastName, address, city, email }
+    const fields = [firstName, lastName, address, city, email]
     console.log('fields:', fields)
-    console.log('firstName:', firstName)
+    console.log('firstName:', firstName.value)
+
+    fields.forEach(field => {
+        field.addEventListener('change', () => {
+            //checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')
+            checkInput(lastName.value, noNumbers, lastNameErrorMsg, 'last name')
+            console.log(field, ' : ', field.value)
+            console.log(firstName.value)
+            //console.log(firstNameErrorMsg.innerHTML = 'hola')
+        });
+        false
+    });
+
+    firstName.addEventListener('change', () => {
+        console.log('firstName.value ', firstName.value)
+        firstNameErrorMsg = firstName.value;
+        console.log('firstNameErrorMsg ', firstNameErrorMsg)
+        checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')
+    });
+
+
+    /*
     firstName.addEventListener('change', () => {
         if (checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')) return;
         if (checkInput(lastName.value, noNumbers, lastNameErrorMsg, 'last name')) return;
         if (checkInput(address.value, noSymbols, addressErrorMsg, 'address')) return;
         if (checkInput(city.value, noNumbers, cityErrorMsg, 'city')) return;
         if (checkInput(email.value, emailReg, emailErrorMsg, 'email')) return;
-    })
+    })*/
     //Check fields    
 
-    console.log('order to send')
     //order();
 
     order.disabled = false;
 }
 
+// Check every field within the form and send an error if it is not correct
 function checkInput(name, regex, error, text) {
-    if (regex.test(name.value) == false) {
+    if (!regex.test(name.value)) {
         error.innerHTML = 'Please add correct ', text;
     } else {
         error.innerHTML = ''
-        return true;
     }
 }
 
-
+// Listen when click Commander button
 function order() {
     document.getElementById("order").addEventListener('click', (event) => {
         event.preventDefault()
         if (cart.length === 0) return
         checkForm()
         //sendOrder()
-
-
     });
 }
 
+// Create array of id products to send it to the backend
 function mapCartToIds(cart) {
     const ids = [];
     for (const sofa of cart) {
@@ -168,8 +189,8 @@ function mapCartToIds(cart) {
     return ids;
 }
 
+// Send selected sofas and form to backend
 function sendOrder() {
-
     const body = {
         contact: {
             firstName: firstName.value,

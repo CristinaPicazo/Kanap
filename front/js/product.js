@@ -1,16 +1,5 @@
-/**
- * Project 5
- * @author Cristina Picazo Merlos
- * @param {string} title - Project 5
- * @param {string} author - Cristina Picazo Merlos
- * @see https://cristinapicazo.github.io/Kanap/front/html/index.html
- * @returns {Object} 
- */
-function Project5(title, author) { }
-
-//Taken id from hombe page
+//Takes id from home page
 const id = window.location.search.split('=').at(-1);
-//Taken data from back
 const url = `http://127.0.0.1:3000/api/products/${id}`;
 fetch(url)
     .then(response => {
@@ -33,7 +22,7 @@ let colors = document.getElementById('colors');
 //Object to save sofas from back
 let sofaChosen;
 
-//Show sofa in the product page from back and id got it from home page
+//Shows selected sofa from home page
 function displayItem(sofa) {
     itemImg[0].innerHTML = `<img src=${sofa.imageUrl} alt=${sofa.altTxt}>`;
     title.innerHTML = `${sofa.name}`;
@@ -49,13 +38,13 @@ function displayItem(sofa) {
     }
 }
 
-//Button "add to cart"
+// Button "add to cart" to send it to localstoreage
 document.getElementById('addToCart').addEventListener('click', () => {
     const quantityNumber = Number(quantity.value);
     if (quantityNumber == 0) return alert("Please select a minimum quantity");
     if (colors.value == "") return alert("Please select the color");
 
-    //product, quantity and color
+    // Product, quantity and color
     sofaChosen.selectedColor = colors.value;
     sofaChosen.selectedQuantity = quantityNumber;
     const key = sofaChosen._id + ":" + colors.value;
@@ -63,12 +52,12 @@ document.getElementById('addToCart').addEventListener('click', () => {
     if (sofa == null) return addSofaToCart(key, sofaChosen);
     updateSofaQuantity(quantityNumber, sofa, sofaChosen);
 
-    //Send sofa to cart
+    // Send sofa to cart
     function addSofaToCart(key, sofaChosen) {
         localStorage.setItem(key, JSON.stringify(sofaChosen));
     }
 
-    //Update sofa quantity if it is already in the cart ++
+    // Update sofa quantity if it is already in the cart
     function updateSofaQuantity(quantityNumber, sofa, sofaChosen) {
         const newQuantity = quantityNumber + sofa.selectedQuantity;
         sofaChosen.selectedQuantity = newQuantity;
