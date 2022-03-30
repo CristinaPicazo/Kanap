@@ -102,7 +102,12 @@ function deleteButton(article) {
 
 //Check if the form is correct to be sent
 function checkForm() {
-    const order = document.getElementById("order").disabled = true;
+    if (order.disabled == true) {
+        console.log('order disabled')
+    }
+    if (order.disabled == false) {
+        console.log('order not disabled')
+    }
     //Name
     const firstName = document.getElementById('firstName');
     const lastName = document.getElementById('lastName');
@@ -116,55 +121,69 @@ function checkForm() {
     const emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
     //Error
-    let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
     const addressErrorMsg = document.getElementById('addressErrorMsg');
     const cityErrorMsg = document.getElementById('cityErrorMsg');
     const emailErrorMsg = document.getElementById('emailErrorMsg');
 
-    //console.log('checkinput ', checkInput(firstName, noNumbers, firstNameErrorMsg, 'name'))
-    const fields = [firstName, lastName, address, city, email]
-    console.log('fields:', fields)
-    console.log('firstName:', firstName.value)
+    const errorFields = [firstNameErrorMsg, lastNameErrorMsg, addressErrorMsg, cityErrorMsg, emailErrorMsg];
+    correctFormToBeSend(errorFields)
 
-    fields.forEach(field => {
-        field.addEventListener('change', () => {
-            //checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')
-            checkInput(lastName.value, noNumbers, lastNameErrorMsg, 'last name')
-            console.log(field, ' : ', field.value)
-            console.log(firstName.value)
-            //console.log(firstNameErrorMsg.innerHTML = 'hola')
-        });
-        false
+
+    //Check fields
+    firstName.addEventListener('change', () => {
+        checkInput(firstName.value, noNumbers, firstNameErrorMsg)
+    });
+    lastName.addEventListener('change', () => {
+        checkInput(lastName.value, noNumbers, lastNameErrorMsg)
+    });
+    address.addEventListener('change', () => {
+        checkInput(address.value, noSymbols, addressErrorMsg)
+    });
+    city.addEventListener('change', () => {
+        checkInput(city.value, noNumbers, cityErrorMsg)
+    });
+    email.addEventListener('change', () => {
+        checkInput(email.value, emailReg, emailErrorMsg)
     });
 
-    firstName.addEventListener('change', () => {
-        console.log('firstName.value ', firstName.value)
-        firstNameErrorMsg = firstName.value;
-        console.log('firstNameErrorMsg ', firstNameErrorMsg)
-        checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')
+    console.log("firstNameErrorMsg.innerHTML == ''", firstNameErrorMsg.innerHTML == '')
+    console.log("lastNameErrorMsg.innerHTML == ''", lastNameErrorMsg.innerHTML == '')
+    console.log("addressErrorMsg.innerHTML == ''", addressErrorMsg.innerHTML == '')
+    console.log("cityErrorMsg.innerHTML == ''", cityErrorMsg.innerHTML == '')
+    console.log("emailErrorMsg.innerHTML == ''", emailErrorMsg.innerHTML == '')
+}
+const cart__order__form__question = document.getElementsByClassName('cart__order__form__question');
+console.log('cart__order__form__question', cart__order__form__question)
+console.log('cart__order__form__question.value', cart__order__form__question.value)
+cart__order__form__question.forEach(question => {
+    question.addEventListener('change', () => {
+        console.log('hi')
+    });
+});
+
+function correctFormToBeSend(errorFields) {
+    errorFields.forEach(errorField => {
+        if (errorField.innerHTML == '') {
+            return console.log('correct')
+        }
+
     });
 
-
-    /*
-    firstName.addEventListener('change', () => {
-        if (checkInput(firstName.value, noNumbers, firstNameErrorMsg, 'name')) return;
-        if (checkInput(lastName.value, noNumbers, lastNameErrorMsg, 'last name')) return;
-        if (checkInput(address.value, noSymbols, addressErrorMsg, 'address')) return;
-        if (checkInput(city.value, noNumbers, cityErrorMsg, 'city')) return;
-        if (checkInput(email.value, emailReg, emailErrorMsg, 'email')) return;
-    })*/
-    //Check fields    
-
-    //order();
-
-    order.disabled = false;
+    //console.log(correctFormToBeSend(errorFields) == false)
+    // if ((firstNameErrorMsg.innerHTML == '') &&
+    //     (lastNameErrorMsg.innerHTML == '') &&
+    //     (addressErrorMsg.innerHTML == '') &&
+    //     (cityErrorMsg.innerHTML == '') &&
+    //     (emailErrorMsg.innerHTML == '')) {
+    // }
 }
 
 // Check every field within the form and send an error if it is not correct
-function checkInput(name, regex, error, text) {
-    if (!regex.test(name.value)) {
-        error.innerHTML = 'Please add correct ', text;
+function checkInput(name, regex, error) {
+    if (regex.test(name) == false) {
+        error.innerHTML = 'Please add correct data ';
     } else {
         error.innerHTML = ''
     }
@@ -173,9 +192,10 @@ function checkInput(name, regex, error, text) {
 // Listen when click Commander button
 function order() {
     document.getElementById("order").addEventListener('click', (event) => {
+        console.log('pinchado')
         event.preventDefault()
         if (cart.length === 0) return
-        checkForm()
+        if (correctFormToBeSend() == false) return console.log('false correct...')
         //sendOrder()
     });
 }
