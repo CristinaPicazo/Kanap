@@ -1,4 +1,4 @@
-//Takes id from home page
+// Takes id from home page
 const id = window.location.search.split('=').at(-1);
 const url = `http://127.0.0.1:3000/api/products/${id}`;
 fetch(url)
@@ -19,17 +19,17 @@ const price = document.getElementById('price');
 const description = document.getElementById('description');
 let quantity = document.getElementById('quantity')
 let colors = document.getElementById('colors');
-//Object to save sofas from back
+// Object to save sofas from back
 let sofaChosen;
 
-//Shows selected sofa from home page
+// Shows selected sofa from home page
 function displayItem(sofa) {
     itemImg[0].innerHTML = `<img src=${sofa.imageUrl} alt=${sofa.altTxt}>`;
     title.innerHTML = `${sofa.name}`;
     price.innerHTML = `${sofa.price}`;
     description.innerHTML = `${sofa.description}`;
 
-    //Display colors in a dropdown
+    // Display colors in a dropdown
     for (const color of sofa.colors) {
         const option = document.createElement("option");
         option.value = color;
@@ -63,7 +63,5 @@ document.getElementById('addToCart').addEventListener('click', () => {
         sofaChosen.selectedQuantity = newQuantity;
         addSofaToCart(key, sofaChosen);
     }
-
-
 })
 

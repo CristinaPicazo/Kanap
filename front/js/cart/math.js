@@ -10,4 +10,5 @@ function calculateTotal(cart) {
     return { numberOfSofas, totalPriceSofas }
 }
 
+// Sent to dom.js
 export { calculateTotal }

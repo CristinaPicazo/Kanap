@@ -1,3 +1,5 @@
+import { formFields } from "./dom";
+
 // Send selected sofas and form to backend
 function sendOrder(cart) {
     const body = {
@@ -36,4 +38,5 @@ function mapCartToIds(cart) {
     return ids;
 }
 
+// Sent to form.js
 export { sendOrder }

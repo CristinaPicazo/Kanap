@@ -1,5 +1,4 @@
 
-
 // Get data from localStorage to show it in the page
 export function createCart() {
     const cart = [];

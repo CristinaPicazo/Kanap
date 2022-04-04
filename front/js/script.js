@@ -8,7 +8,7 @@
  */
 function Project5(title, author) { }
 
-//Takes data from backend
+// Takes data from backend
 const url = 'http://127.0.0.1:3000/api/products';
 fetch(url)
     .then(response => {
@@ -20,11 +20,11 @@ fetch(url)
     })
     .catch(err => console.log(err))
 
-//Displays items from backend (fetch)
+// Displays items from backend (fetch)
 function displayItems(sofas) {
     const section = document.getElementById('items')
 
-    //Loop to show items from JSON
+    // Loop to show items from JSON
     for (let i = 0; i < sofas.length; i++) {
         const sofa = sofas[i];
         section.innerHTML += `

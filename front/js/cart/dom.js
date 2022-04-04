@@ -1,28 +1,31 @@
 import { calculateTotal } from "./math.js";
-//Name
+// Name
 const firstName = document.getElementById('firstName');
 const lastName = document.getElementById('lastName');
 const address = document.getElementById('address');
 const city = document.getElementById('city');
 const email = document.getElementById('email');
 
-//Regex
+// Regex
 const noNumbersRegEx = new RegExp(/^[A-Za-z ]*$/);
 const noSymbolsRegEx = new RegExp(/^[A-Za-z0-9 ]*$/);
 const emailRegEx = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
+// Error Div
 const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
 const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
 const addressErrorMsg = document.getElementById('addressErrorMsg');
 const cityErrorMsg = document.getElementById('cityErrorMsg');
 const emailErrorMsg = document.getElementById('emailErrorMsg');
 
+// Object
 const first = { element: firstName, regex: noNumbersRegEx, errorDiv: firstNameErrorMsg, errorMsg: 'Fist name cannot have numbers' }
 const last = { element: lastName, regex: noNumbersRegEx, errorDiv: lastNameErrorMsg, errorMsg: 'Last name cannot have numbers' }
 const addr = { element: address, regex: noSymbolsRegEx, errorDiv: addressErrorMsg, errorMsg: 'Addres cannot have symbols' }
 const cty = { element: city, regex: noNumbersRegEx, errorDiv: cityErrorMsg, errorMsg: 'City cannot have numbers' }
 const mail = { element: email, regex: emailRegEx, errorDiv: emailErrorMsg, errorMsg: 'Email must have @ and domain' }
 
+// Array
 const formFields = [first, last, addr, cty, mail];
 
 // Show sofas within html
@@ -74,7 +77,7 @@ function listenQuantity(article, sofa, cart) {
     });
 }
 
-// Delete sofa click the button
+// Delete sofa on click the button
 function deleteButton(article) {
     const deleteButton = article.querySelector(".deleteItem");
     deleteButton.addEventListener("click", () => {
@@ -95,6 +98,7 @@ function showItemsinPage(cart) {
         listenQuantity(article, sofa, cart)
         deleteButton(article);
     }
+    // Import it from math.js
     const total = calculateTotal(cart);
     updateTotal(total);
 }
