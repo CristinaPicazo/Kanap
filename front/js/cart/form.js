@@ -3,7 +3,7 @@ import { sendOrder } from "./http.js";
 function handleForm(formFields, cart) {
     for (const field of formFields) {
         // Check fields
-        field.element.addEventListener('change', () => {
+        field.element.addEventListener('input', () => {
             checkInput(field)
         });
     }

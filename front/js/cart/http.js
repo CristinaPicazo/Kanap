@@ -1,4 +1,4 @@
-import { formFields } from "./dom";
+import { formFields } from "./dom.js";
 
 // Send selected sofas and form to backend
 function sendOrder(cart) {
