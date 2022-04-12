@@ -72,6 +72,9 @@ function updateTotal(total) {
 function listenQuantity(article, sofa, cart) {
     article.querySelector('.itemQuantity').addEventListener('change', (event) => {
         sofa.selectedQuantity = Number(event.target.value);
+        const key = sofa._id + ":" + sofa.selectedColor;
+        window.localStorage.setItem(key, JSON.stringify(sofa));
+
         const total = calculateTotal(cart);
         updateTotal(total);
     });
@@ -90,7 +93,6 @@ function deleteButton(article) {
 // Display selected items from product page
 function showItemsinPage(cart) {
     const cartItems = document.getElementById("cart__items");
-    if (cartItems == null) return;
     for (const sofa of cart) {
         const article = createArticle(sofa);
         cartItems.appendChild(article);

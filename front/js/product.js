@@ -1,5 +1,6 @@
 // Takes id from home page
-const id = window.location.search.split('=').at(-1);
+const searchParams = new URLSearchParams(window.location.search);
+const id = searchParams.get('id')
 const url = `http://127.0.0.1:3000/api/products/${id}`;
 fetch(url)
     .then(response => {
