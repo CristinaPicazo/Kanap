@@ -3,6 +3,7 @@ import { formFields } from "./dom.js";
 // Send selected sofas and form to backend
 function sendOrder(cart) {
     const body = {
+        // Contact details
         contact: {
             firstName: firstName.value,
             lastName: lastName.value,
@@ -10,9 +11,11 @@ function sendOrder(cart) {
             city: city.value,
             email: email.value
         },
+        // Array of ids
         products: mapCartToIds(cart)
     }
 
+    // Shows confirmation page
     const url = `http://127.0.0.1:3000/api/products/order`;
     fetch(url, {
         method: "POST",

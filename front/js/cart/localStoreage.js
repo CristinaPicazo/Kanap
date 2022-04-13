@@ -11,6 +11,7 @@ export function createCart() {
     return cart.sort((a, b) => a._id.localeCompare(b._id));
 }
 
+// Sensitive data is taken from back instead of localStorage
 export function addPriceToSofa(sofa) {
     const url = `http://127.0.0.1:3000/api/products/${sofa._id}`;
     return fetch(url)

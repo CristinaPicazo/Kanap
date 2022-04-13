@@ -59,7 +59,22 @@ function createArticle(sofa) {
     return article
 }
 
-// Update the amount and price
+// Listen any change of the amount of sofas
+function listenQuantity(article, sofa, cart) {
+    article.querySelector('.itemQuantity').addEventListener('change', (event) => {
+        // Actual number
+        sofa.selectedQuantity = Number(event.target.value);
+        // Send it to back in case customer goes to another page or reload
+        const key = sofa._id + ":" + sofa.selectedColor;
+        window.localStorage.setItem(key, JSON.stringify(sofa));
+
+        // Imported from math.js
+        const total = calculateTotal(cart);
+        updateTotal(total);
+    });
+}
+
+// Update total amount and total price
 function updateTotal(total) {
     const totalQuantity = document.getElementById('totalQuantity');
     const totalPrice = document.getElementById('totalPrice');
@@ -68,24 +83,14 @@ function updateTotal(total) {
     totalPrice.innerHTML = total.totalPriceSofas;
 }
 
-// Listen any change of the amount of sofas
-function listenQuantity(article, sofa, cart) {
-    article.querySelector('.itemQuantity').addEventListener('change', (event) => {
-        sofa.selectedQuantity = Number(event.target.value);
-        const key = sofa._id + ":" + sofa.selectedColor;
-        window.localStorage.setItem(key, JSON.stringify(sofa));
-
-        const total = calculateTotal(cart);
-        updateTotal(total);
-    });
-}
-
 // Delete sofa on click the button
 function deleteButton(article) {
     const deleteButton = article.querySelector(".deleteItem");
     deleteButton.addEventListener("click", () => {
+        // Remove item from localStorage
         const key = article.dataset.id + ":" + article.dataset.color;
         window.localStorage.removeItem(key);
+        // Reload page to get items from localStorage again
         window.location.reload()
     });
 }

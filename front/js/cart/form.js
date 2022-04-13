@@ -4,15 +4,17 @@ function handleForm(formFields, cart) {
     for (const field of formFields) {
         // Check fields
         field.element.addEventListener('input', () => {
+            // Check inputs with regex
             checkInput(field)
         });
     }
     document.getElementById("order").addEventListener('click', (event) => {
+        // Send data to back and show confirmation page
         submitForm(event, cart, formFields);
     });
 }
 
-// Check everything is correct and send to confirmation page
+// Checks if everything is correct and show confirmation page
 function submitForm(event, cart, formFields) {
     event.preventDefault()
     if (cart.length === 0) return
